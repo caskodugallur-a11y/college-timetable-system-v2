@@ -4,6 +4,7 @@ Complete CRUD operations for timetable management system
 """
 
 import os
+import json
 import logging
 from typing import Any, Dict, List, Optional
 from datetime import datetime
@@ -36,24 +37,37 @@ class FirebaseService:
             return
         
         try:
-            # Get service account key path from environment or default
-            service_account_path = os.getenv(
-                'FIREBASE_SERVICE_ACCOUNT_KEY',
-                'serviceAccountKey.json'
+           import json
+
+# Initialize Firebase Admin SDK only once
+if not firebase_admin._apps:
+
+    # ---------- Render ----------
+    service_account_json = os.getenv("FIREBASE_SERVICE_ACCOUNT_JSON")
+
+    if service_account_json:
+        cred = credentials.Certificate(json.loads(service_account_json))
+
+    # ---------- Local Development ----------
+    else:
+        service_account_path = os.getenv(
+            "FIREBASE_SERVICE_ACCOUNT_KEY",
+            "serviceAccountKey.json"
+        )
+
+        if not os.path.isabs(service_account_path):
+            service_account_path = os.path.join(
+                os.path.dirname(
+                    os.path.dirname(
+                        os.path.dirname(__file__)
+                    )
+                ),
+                service_account_path
             )
-            
-            # Resolve path relative to backend directory
-            if not os.path.isabs(service_account_path):
-                service_account_path = os.path.join(
-                    os.path.dirname(os.path.dirname(os.path.dirname(__file__))),
-                    service_account_path
-                )
-            
-            # Initialize Firebase Admin SDK only once
-            if not firebase_admin._apps:
-                cred = credentials.Certificate(service_account_path)
-                firebase_admin.initialize_app(cred)
-            
+
+        cred = credentials.Certificate(service_account_path)
+
+    firebase_admin.initialize_app(cred)
             # Get Firestore client
             FirebaseService._db = firestore.client()
             logger.info("Firebase Admin SDK initialized successfully")
