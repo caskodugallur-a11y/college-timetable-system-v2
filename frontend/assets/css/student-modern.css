@@ -1,0 +1,1244 @@
+/* ============================================
+   CAS KODUNGALLUR — STUDENT VIEW MODERN DESIGN
+   Apple / Linear / Notion / Stripe Inspired
+   Light Mode Default · Glassmorphism
+   ============================================ */
+
+/* ── Google Fonts ── */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+/* ============================================
+   DESIGN TOKENS — Student View Override
+   ============================================ */
+:root {
+  --sv-font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --sv-bg: #F5F7FA;
+  --sv-bg-subtle: #FAFBFC;
+  --sv-surface: rgba(255, 255, 255, 0.72);
+  --sv-surface-hover: rgba(255, 255, 255, 0.88);
+  --sv-surface-solid: #FFFFFF;
+  --sv-border: rgba(0, 0, 0, 0.06);
+  --sv-border-hover: rgba(0, 0, 0, 0.12);
+  --sv-text-primary: #1A1A2E;
+  --sv-text-secondary: #64748B;
+  --sv-text-tertiary: #94A3B8;
+  --sv-accent: #4F6EF7;
+  --sv-accent-light: #EEF2FF;
+  --sv-accent-hover: #4361EE;
+  --sv-accent-text: #FFFFFF;
+  --sv-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
+  --sv-shadow-md: 0 4px 12px rgba(0, 0, 0, 0.06);
+  --sv-shadow-lg: 0 8px 30px rgba(0, 0, 0, 0.08);
+  --sv-shadow-xl: 0 20px 60px rgba(0, 0, 0, 0.1);
+  --sv-blur: 20px;
+  --sv-radius: 16px;
+  --sv-radius-sm: 10px;
+  --sv-radius-xs: 8px;
+  --sv-radius-full: 9999px;
+  --sv-transition: 200ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --sv-transition-spring: 300ms cubic-bezier(0.34, 1.56, 0.64, 1);
+  --sv-success: #10B981;
+  --sv-warning: #F59E0B;
+  --sv-danger: #EF4444;
+
+  /* Timetable cell colors — soft pastels */
+  --sv-cell-blue: #EFF6FF;
+  --sv-cell-blue-border: #BFDBFE;
+  --sv-cell-blue-text: #1E40AF;
+  --sv-cell-purple: #F5F3FF;
+  --sv-cell-purple-border: #DDD6FE;
+  --sv-cell-purple-text: #5B21B6;
+  --sv-cell-green: #F0FDF4;
+  --sv-cell-green-border: #BBF7D0;
+  --sv-cell-green-text: #166534;
+  --sv-cell-amber: #FFFBEB;
+  --sv-cell-amber-border: #FDE68A;
+  --sv-cell-amber-text: #92400E;
+  --sv-cell-rose: #FFF1F2;
+  --sv-cell-rose-border: #FECDD3;
+  --sv-cell-rose-text: #9F1239;
+  --sv-cell-teal: #F0FDFA;
+  --sv-cell-teal-border: #99F6E4;
+  --sv-cell-teal-text: #115E59;
+}
+
+/* ── Dark Mode Overrides ── */
+[data-theme="dark"] {
+  --sv-bg: #0B0F1A;
+  --sv-bg-subtle: #111827;
+  --sv-surface: rgba(255, 255, 255, 0.05);
+  --sv-surface-hover: rgba(255, 255, 255, 0.08);
+  --sv-surface-solid: #1E293B;
+  --sv-border: rgba(255, 255, 255, 0.08);
+  --sv-border-hover: rgba(255, 255, 255, 0.15);
+  --sv-text-primary: #F1F5F9;
+  --sv-text-secondary: #94A3B8;
+  --sv-text-tertiary: #64748B;
+  --sv-accent: #6C8AFF;
+  --sv-accent-light: rgba(108, 138, 255, 0.12);
+  --sv-accent-hover: #5B7CF7;
+  --sv-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --sv-shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
+  --sv-shadow-lg: 0 8px 30px rgba(0, 0, 0, 0.5);
+  --sv-shadow-xl: 0 20px 60px rgba(0, 0, 0, 0.6);
+
+  --sv-cell-blue: rgba(59, 130, 246, 0.12);
+  --sv-cell-blue-border: rgba(59, 130, 246, 0.25);
+  --sv-cell-blue-text: #93BBFD;
+  --sv-cell-purple: rgba(139, 92, 246, 0.12);
+  --sv-cell-purple-border: rgba(139, 92, 246, 0.25);
+  --sv-cell-purple-text: #C4B5FD;
+  --sv-cell-green: rgba(16, 185, 129, 0.12);
+  --sv-cell-green-border: rgba(16, 185, 129, 0.25);
+  --sv-cell-green-text: #6EE7B7;
+  --sv-cell-amber: rgba(245, 158, 11, 0.12);
+  --sv-cell-amber-border: rgba(245, 158, 11, 0.25);
+  --sv-cell-amber-text: #FCD34D;
+  --sv-cell-rose: rgba(244, 63, 94, 0.12);
+  --sv-cell-rose-border: rgba(244, 63, 94, 0.25);
+  --sv-cell-rose-text: #FDA4AF;
+  --sv-cell-teal: rgba(20, 184, 166, 0.12);
+  --sv-cell-teal-border: rgba(20, 184, 166, 0.25);
+  --sv-cell-teal-text: #5EEAD4;
+}
+
+/* ============================================
+   BASE — Student Page Override
+   ============================================ */
+body.student-page-modern {
+  font-family: var(--sv-font) !important;
+  background: var(--sv-bg) !important;
+  color: var(--sv-text-primary);
+  min-height: 100vh;
+  overflow-x: hidden;
+  transition: background var(--sv-transition), color var(--sv-transition);
+}
+
+/* Kill all old dashboard styling on this page */
+body.student-page-modern .student-dashboard-wrapper,
+body.student-page-modern .student-sidebar,
+body.student-page-modern .student-main-content,
+body.student-page-modern .dashboard-module-pane,
+body.student-page-modern .student-footer,
+body.student-page-modern #bg3d,
+body.student-page-modern #aura {
+  display: none !important;
+}
+
+/* ============================================
+   TOP NAVIGATION BAR
+   ============================================ */
+.sv-topbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 32px;
+  height: 64px;
+  background: var(--sv-surface);
+  backdrop-filter: blur(var(--sv-blur));
+  -webkit-backdrop-filter: blur(var(--sv-blur));
+  border-bottom: 1px solid var(--sv-border);
+  transition: all var(--sv-transition);
+}
+
+.sv-topbar-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.sv-topbar-logo {
+  width: 36px;
+  height: 36px;
+  background: var(--sv-accent);
+  border-radius: var(--sv-radius-xs);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.sv-topbar-logo svg {
+  color: white;
+}
+
+.sv-topbar-title {
+  font-size: 1.0625rem;
+  font-weight: 700;
+  color: var(--sv-text-primary);
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+
+.sv-topbar-subtitle {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--sv-text-secondary);
+  letter-spacing: 0.01em;
+}
+
+.sv-topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.sv-datetime {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  background: var(--sv-surface);
+  border: 1px solid var(--sv-border);
+  border-radius: var(--sv-radius-full);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--sv-text-secondary);
+  white-space: nowrap;
+}
+
+.sv-datetime svg {
+  color: var(--sv-text-tertiary);
+  flex-shrink: 0;
+}
+
+.sv-datetime .sv-time {
+  font-weight: 600;
+  color: var(--sv-text-primary);
+}
+
+.sv-theme-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--sv-radius-xs);
+  border: 1px solid var(--sv-border);
+  background: var(--sv-surface);
+  color: var(--sv-text-secondary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--sv-transition);
+}
+
+.sv-theme-btn:hover {
+  background: var(--sv-surface-hover);
+  border-color: var(--sv-border-hover);
+  color: var(--sv-text-primary);
+  transform: scale(1.05);
+}
+
+.sv-theme-btn:active {
+  transform: scale(0.95);
+}
+
+/* ============================================
+   MAIN CONTENT AREA
+   ============================================ */
+.sv-main {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 32px 24px 80px;
+}
+
+/* ============================================
+   FILTER CARD — Premium Glass Panel
+   ============================================ */
+.sv-filter-card {
+  background: var(--sv-surface);
+  backdrop-filter: blur(var(--sv-blur));
+  -webkit-backdrop-filter: blur(var(--sv-blur));
+  border: 1px solid var(--sv-border);
+  border-radius: var(--sv-radius);
+  padding: 28px 32px;
+  margin-bottom: 28px;
+  box-shadow: var(--sv-shadow-md);
+  transition: all var(--sv-transition);
+}
+
+.sv-filter-card:hover {
+  box-shadow: var(--sv-shadow-lg);
+}
+
+.sv-filter-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.sv-filter-header svg {
+  color: var(--sv-accent);
+  flex-shrink: 0;
+}
+
+.sv-filter-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--sv-text-primary);
+  letter-spacing: -0.01em;
+}
+
+.sv-filter-desc {
+  font-size: 0.8125rem;
+  color: var(--sv-text-tertiary);
+  font-weight: 400;
+}
+
+.sv-filter-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr auto;
+  gap: 16px;
+  align-items: end;
+}
+
+/* ── Dropdown Wrapper ── */
+.sv-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.sv-field-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--sv-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.sv-select {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 100%;
+  padding: 10px 36px 10px 14px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  font-family: var(--sv-font);
+  color: var(--sv-text-primary);
+  background: var(--sv-surface-solid);
+  border: 1px solid var(--sv-border);
+  border-radius: var(--sv-radius-sm);
+  cursor: pointer;
+  transition: all var(--sv-transition);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2394A3B8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 16px;
+}
+
+[data-theme="dark"] .sv-select {
+  background-color: var(--sv-surface-solid);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2364748B' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+}
+
+.sv-select:hover {
+  border-color: var(--sv-border-hover);
+  box-shadow: var(--sv-shadow-sm);
+}
+
+.sv-select:focus {
+  outline: none;
+  border-color: var(--sv-accent);
+  box-shadow: 0 0 0 3px rgba(79, 110, 247, 0.12);
+}
+
+.sv-select option {
+  font-family: var(--sv-font);
+  padding: 8px;
+}
+
+/* ── Custom Teacher Dropdown ── */
+.sv-teacher-dropdown {
+  position: relative;
+}
+
+.sv-teacher-trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 10px 14px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  font-family: var(--sv-font);
+  color: var(--sv-text-primary);
+  background: var(--sv-surface-solid);
+  border: 1px solid var(--sv-border);
+  border-radius: var(--sv-radius-sm);
+  cursor: pointer;
+  transition: all var(--sv-transition);
+  text-align: left;
+}
+
+.sv-teacher-trigger:hover {
+  border-color: var(--sv-border-hover);
+  box-shadow: var(--sv-shadow-sm);
+}
+
+.sv-teacher-trigger.active {
+  border-color: var(--sv-accent);
+  box-shadow: 0 0 0 3px rgba(79, 110, 247, 0.12);
+}
+
+.sv-teacher-trigger .sv-trigger-text {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sv-teacher-trigger .sv-trigger-text.placeholder {
+  color: var(--sv-text-tertiary);
+}
+
+.sv-teacher-trigger .sv-trigger-icon {
+  color: var(--sv-text-tertiary);
+  transition: transform var(--sv-transition);
+  flex-shrink: 0;
+  margin-left: 8px;
+}
+
+.sv-teacher-trigger.active .sv-trigger-icon {
+  transform: rotate(180deg);
+}
+
+/* Dropdown Panel */
+.sv-teacher-panel {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+  background: var(--sv-surface-solid);
+  border: 1px solid var(--sv-border);
+  border-radius: var(--sv-radius-sm);
+  box-shadow: var(--sv-shadow-lg);
+  z-index: 200;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-8px);
+  transition: all var(--sv-transition);
+  max-height: 280px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.sv-teacher-panel.open {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.sv-teacher-search {
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--sv-border);
+  position: relative;
+}
+
+.sv-teacher-search input {
+  width: 100%;
+  padding: 8px 8px 8px 32px;
+  font-size: 0.8125rem;
+  font-family: var(--sv-font);
+  color: var(--sv-text-primary);
+  background: var(--sv-bg-subtle);
+  border: 1px solid var(--sv-border);
+  border-radius: var(--sv-radius-xs);
+  outline: none;
+  transition: all var(--sv-transition);
+}
+
+.sv-teacher-search input:focus {
+  border-color: var(--sv-accent);
+  box-shadow: 0 0 0 2px rgba(79, 110, 247, 0.08);
+}
+
+.sv-teacher-search input::placeholder {
+  color: var(--sv-text-tertiary);
+}
+
+.sv-teacher-search svg {
+  position: absolute;
+  left: 24px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--sv-text-tertiary);
+  pointer-events: none;
+}
+
+.sv-teacher-list {
+  overflow-y: auto;
+  max-height: 220px;
+  padding: 4px;
+}
+
+.sv-teacher-option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  border-radius: var(--sv-radius-xs);
+  cursor: pointer;
+  transition: all 150ms ease;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--sv-text-primary);
+}
+
+.sv-teacher-option:hover {
+  background: var(--sv-accent-light);
+}
+
+.sv-teacher-option.selected {
+  color: var(--sv-accent);
+  background: var(--sv-accent-light);
+}
+
+.sv-teacher-avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: var(--sv-radius-full);
+  background: var(--sv-accent-light);
+  color: var(--sv-accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.sv-teacher-option .sv-check-icon {
+  margin-left: auto;
+  color: var(--sv-accent);
+  opacity: 0;
+  transition: opacity 150ms ease;
+}
+
+.sv-teacher-option.selected .sv-check-icon {
+  opacity: 1;
+}
+
+/* ── Download Button ── */
+.sv-download-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  font-family: var(--sv-font);
+  color: var(--sv-accent-text);
+  background: var(--sv-accent);
+  border: none;
+  border-radius: var(--sv-radius-sm);
+  cursor: pointer;
+  transition: all var(--sv-transition);
+  white-space: nowrap;
+  height: 42px;
+}
+
+.sv-download-btn:hover {
+  background: var(--sv-accent-hover);
+  transform: scale(1.05) translateY(-2px);
+  box-shadow: 0 8px 20px rgba(79, 110, 247, 0.35);
+}
+
+.sv-download-btn:active {
+  transform: scale(0.97) translateY(0);
+}
+
+.sv-download-btn svg {
+  flex-shrink: 0;
+}
+
+/* ============================================
+   TEACHER INFO BANNER
+   ============================================ */
+.sv-teacher-banner {
+  display: none;
+  align-items: center;
+  gap: 16px;
+  padding: 20px 24px;
+  background: var(--sv-surface);
+  backdrop-filter: blur(var(--sv-blur));
+  -webkit-backdrop-filter: blur(var(--sv-blur));
+  border: 1px solid var(--sv-border);
+  border-radius: var(--sv-radius);
+  margin-bottom: 28px;
+  box-shadow: var(--sv-shadow-sm);
+  animation: sv-fadeUp 300ms ease forwards;
+}
+
+.sv-teacher-banner.visible {
+  display: flex;
+}
+
+@keyframes sv-fadeUp {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.sv-teacher-banner-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  background: var(--sv-accent-light);
+  color: var(--sv-accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.sv-teacher-banner-info {
+  flex: 1;
+}
+
+.sv-teacher-banner-name {
+  font-size: 1.0625rem;
+  font-weight: 700;
+  color: var(--sv-text-primary);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.sv-teacher-badge {
+  display: inline-flex;
+  padding: 2px 10px;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  color: var(--sv-accent);
+  background: var(--sv-accent-light);
+  border-radius: var(--sv-radius-full);
+  letter-spacing: 0.03em;
+}
+
+.sv-teacher-banner-desc {
+  font-size: 0.8125rem;
+  color: var(--sv-text-secondary);
+  margin-top: 2px;
+}
+
+/* ============================================
+   TIMETABLE CARD
+   ============================================ */
+.sv-timetable-card {
+  background: var(--sv-surface);
+  backdrop-filter: blur(var(--sv-blur));
+  -webkit-backdrop-filter: blur(var(--sv-blur));
+  border: 1px solid var(--sv-border);
+  border-radius: var(--sv-radius);
+  overflow: hidden;
+  box-shadow: var(--sv-shadow-md);
+  transition: all var(--sv-transition);
+}
+
+.sv-timetable-card:hover {
+  box-shadow: var(--sv-shadow-lg);
+}
+
+.sv-timetable-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 28px;
+  border-bottom: 1px solid var(--sv-border);
+}
+
+.sv-timetable-header-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.sv-timetable-header-left svg {
+  color: var(--sv-accent);
+}
+
+.sv-timetable-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--sv-text-primary);
+  letter-spacing: -0.01em;
+}
+
+.sv-week-info {
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--sv-text-secondary);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.sv-timetable-body {
+  padding: 0;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.sv-timetable-body::-webkit-scrollbar {
+  height: 4px;
+}
+
+.sv-timetable-body::-webkit-scrollbar-thumb {
+  background: var(--sv-border);
+  border-radius: 4px;
+}
+
+/* ── Placeholder ── */
+.sv-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 24px;
+  text-align: center;
+}
+
+.sv-placeholder svg {
+  color: var(--sv-text-tertiary);
+  margin-bottom: 16px;
+  opacity: 0.5;
+}
+
+.sv-placeholder-text {
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: var(--sv-text-tertiary);
+}
+
+.sv-placeholder-sub {
+  font-size: 0.8125rem;
+  color: var(--sv-text-tertiary);
+  margin-top: 4px;
+  opacity: 0.7;
+}
+
+/* ============================================
+   TIMETABLE GRID — Modern Table
+   ============================================ */
+.sv-table {
+  width: 100%;
+  min-width: 720px;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.sv-table thead {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.sv-table th {
+  padding: 12px 8px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--sv-text-secondary);
+  background: var(--sv-bg-subtle);
+  border-bottom: 1px solid var(--sv-border);
+  text-align: center;
+  white-space: nowrap;
+}
+
+.sv-table th:first-child {
+  text-align: center;
+  width: 110px;
+  min-width: 110px;
+}
+
+.sv-table td {
+  padding: 4px;
+  border-bottom: 1px solid var(--sv-border);
+  vertical-align: top;
+  text-align: center;
+}
+
+.sv-table td:first-child {
+  width: 110px;
+  min-width: 110px;
+}
+
+.sv-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* ── Time Cell ── */
+.sv-time-cell {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--sv-text-secondary);
+  line-height: 1.4;
+  padding: 16px 8px !important;
+  text-align: center;
+  vertical-align: middle !important;
+}
+
+.sv-time-cell .sv-time-range {
+  display: block;
+  font-size: 0.6875rem;
+  font-weight: 500;
+  color: var(--sv-text-tertiary);
+  margin-top: 2px;
+}
+
+/* ── Subject Cell ── */
+.sv-cell {
+  padding: 8px;
+  border-radius: var(--sv-radius-xs);
+  min-height: 68px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  transition: all var(--sv-transition);
+  cursor: default;
+  margin: 2px;
+  border: 1px solid transparent;
+}
+
+.sv-cell:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--sv-shadow-sm);
+}
+
+.sv-cell-subject {
+  font-size: 0.8125rem;
+  font-weight: 700;
+  line-height: 1.3;
+  text-align: center;
+}
+
+.sv-cell-class {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  opacity: 0.85;
+  text-align: center;
+}
+
+.sv-cell-teacher {
+  font-size: 0.6875rem;
+  font-weight: 500;
+  opacity: 0.75;
+  text-align: center;
+}
+
+.sv-cell-room {
+  font-size: 0.625rem;
+  font-weight: 500;
+  opacity: 0.6;
+  text-align: center;
+}
+
+/* Cell Colors */
+.sv-cell-blue { background: var(--sv-cell-blue); border-color: var(--sv-cell-blue-border); color: var(--sv-cell-blue-text); }
+.sv-cell-purple { background: var(--sv-cell-purple); border-color: var(--sv-cell-purple-border); color: var(--sv-cell-purple-text); }
+.sv-cell-green { background: var(--sv-cell-green); border-color: var(--sv-cell-green-border); color: var(--sv-cell-green-text); }
+.sv-cell-amber { background: var(--sv-cell-amber); border-color: var(--sv-cell-amber-border); color: var(--sv-cell-amber-text); }
+.sv-cell-rose { background: var(--sv-cell-rose); border-color: var(--sv-cell-rose-border); color: var(--sv-cell-rose-text); }
+.sv-cell-teal { background: var(--sv-cell-teal); border-color: var(--sv-cell-teal-border); color: var(--sv-cell-teal-text); }
+
+/* Empty Cell */
+.sv-cell-empty {
+  font-size: 0.75rem;
+  color: var(--sv-text-tertiary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 68px;
+}
+
+/* ── Lunch Break Row ── */
+.sv-lunch-row td {
+  background: var(--sv-bg-subtle);
+  border-bottom: 1px solid var(--sv-border);
+  padding: 0 !important;
+}
+
+.sv-lunch-cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--sv-text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+/* ============================================
+   TIMETABLE FOOTNOTE
+   ============================================ */
+.sv-footnote {
+  padding: 12px 28px;
+  font-size: 0.75rem;
+  color: var(--sv-text-tertiary);
+  border-top: 1px solid var(--sv-border);
+}
+
+/* ============================================
+   SCROLL HINT
+   ============================================ */
+.sv-scroll-hint {
+  display: none;
+  font-size: 0.75rem;
+  color: var(--sv-text-tertiary);
+  text-align: center;
+  padding: 8px;
+}
+
+/* ============================================
+   RESPONSIVE — Mobile-First Overhaul
+   ============================================ */
+
+/* ── Tablet (up to 900px) ── */
+@media (max-width: 900px) {
+  .sv-filter-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  
+  .sv-download-btn {
+    grid-column: 1 / -1;
+    justify-content: center;
+  }
+
+  .sv-table {
+    min-width: 600px;
+  }
+}
+
+/* ── Mobile (up to 640px) ── */
+@media (max-width: 640px) {
+  /* Topbar: compact, no overflow */
+  .sv-topbar {
+    padding: 0 12px;
+    height: 56px;
+    gap: 8px;
+  }
+  
+  .sv-topbar-brand {
+    gap: 8px;
+    min-width: 0;
+    flex-shrink: 1;
+  }
+  
+  .sv-topbar-title {
+    font-size: 0.9375rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  .sv-topbar-subtitle {
+    display: none;
+  }
+
+  .sv-topbar-logo {
+    width: 32px;
+    height: 32px;
+  }
+  
+  .sv-topbar-right {
+    gap: 8px;
+    flex-shrink: 0;
+  }
+  
+  .sv-datetime {
+    display: none;
+  }
+
+  /* Main content: tighter padding */
+  .sv-main {
+    padding: 16px 10px 100px;
+  }
+  
+  /* Filter card: compact */
+  .sv-filter-card {
+    padding: 16px 14px;
+    border-radius: 12px;
+    margin-bottom: 16px;
+  }
+
+  .sv-filter-header {
+    margin-bottom: 14px;
+  }
+  
+  .sv-filter-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  /* Touch-friendly dropdowns and buttons */
+  .sv-select {
+    padding: 12px 36px 12px 14px;
+    min-height: 44px;
+    font-size: 0.9375rem;
+  }
+
+  .sv-teacher-trigger {
+    padding: 12px 14px;
+    min-height: 44px;
+  }
+
+  .sv-download-btn {
+    width: 100%;
+    justify-content: center;
+    padding: 12px 20px;
+    min-height: 44px;
+    border-radius: 10px;
+  }
+
+  /* Teacher banner: stacked */
+  .sv-teacher-banner {
+    flex-direction: column;
+    text-align: center;
+    padding: 16px;
+    margin-bottom: 16px;
+    border-radius: 12px;
+  }
+  
+  .sv-teacher-banner-name {
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  /* Timetable card */
+  .sv-timetable-card {
+    border-radius: 12px;
+  }
+
+  .sv-timetable-header {
+    padding: 14px 16px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
+
+  .sv-timetable-title {
+    font-size: 0.9375rem;
+  }
+
+  .sv-week-info {
+    font-size: 0.75rem;
+  }
+  
+  /* Timetable: allow horizontal scroll */
+  .sv-timetable-body {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+  }
+
+  .sv-table {
+    min-width: 560px;
+  }
+
+  .sv-table th {
+    padding: 10px 6px;
+    font-size: 0.6875rem;
+  }
+
+  .sv-table td {
+    padding: 3px;
+  }
+
+  .sv-table th:first-child,
+  .sv-table td:first-child {
+    width: 80px;
+    min-width: 80px;
+    position: sticky;
+    left: 0;
+    z-index: 5;
+    background: var(--sv-bg-subtle);
+  }
+
+  .sv-table td:first-child {
+    background: var(--sv-surface);
+  }
+
+  .sv-cell {
+    padding: 6px;
+    min-height: 56px;
+    border-radius: 6px;
+  }
+
+  .sv-cell-subject {
+    font-size: 0.6875rem;
+    line-height: 1.2;
+  }
+
+  .sv-cell-teacher,
+  .sv-cell-class {
+    font-size: 0.5625rem;
+  }
+
+  .sv-cell-room {
+    display: none;
+  }
+
+  .sv-time-cell {
+    font-size: 0.6875rem;
+    padding: 10px 4px !important;
+  }
+
+  .sv-time-cell .sv-time-range {
+    font-size: 0.5625rem;
+  }
+  
+  .sv-scroll-hint {
+    display: block;
+    padding: 10px;
+    font-size: 0.75rem;
+  }
+
+  .sv-footnote {
+    padding: 10px 16px;
+    font-size: 0.6875rem;
+  }
+
+  .sv-placeholder {
+    padding: 40px 16px;
+  }
+
+  .sv-placeholder svg {
+    width: 40px;
+    height: 40px;
+  }
+
+  .sv-placeholder-text {
+    font-size: 0.875rem;
+  }
+
+  /* Theme button: touch-friendly */
+  .sv-theme-btn {
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
+  }
+
+  /* Notification bell: touch-friendly */
+  .sv-notif-bell {
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
+  }
+}
+
+/* ── Small phones (up to 380px) ── */
+@media (max-width: 380px) {
+  .sv-topbar {
+    padding: 0 8px;
+  }
+
+  .sv-topbar-title {
+    font-size: 0.8125rem;
+  }
+
+  .sv-main {
+    padding: 12px 8px 100px;
+  }
+
+  .sv-filter-card {
+    padding: 14px 12px;
+  }
+
+  .sv-table {
+    min-width: 500px;
+  }
+
+  .sv-table th:first-child,
+  .sv-table td:first-child {
+    width: 68px;
+    min-width: 68px;
+  }
+}
+
+/* ── Landscape mobile orientation ── */
+@media (max-height: 500px) and (orientation: landscape) {
+  .sv-topbar {
+    height: 48px;
+    padding: 0 16px;
+  }
+
+  .sv-main {
+    padding: 12px 16px 60px;
+  }
+
+  .sv-filter-card {
+    padding: 14px 16px;
+    margin-bottom: 12px;
+  }
+
+  .sv-filter-grid {
+    grid-template-columns: 1fr 1fr 1fr auto;
+    gap: 10px;
+  }
+
+  .sv-timetable-header {
+    padding: 10px 16px;
+  }
+}
+
+/* ── iOS safe-area padding ── */
+@supports (padding-bottom: env(safe-area-inset-bottom)) {
+  .sv-main {
+    padding-bottom: calc(80px + env(safe-area-inset-bottom));
+  }
+}
+
+/* ============================================
+   FOCUS & ACCESSIBILITY
+   ============================================ */
+.sv-select:focus-visible,
+.sv-teacher-trigger:focus-visible,
+.sv-download-btn:focus-visible,
+.sv-theme-btn:focus-visible {
+  outline: 2px solid var(--sv-accent);
+  outline-offset: 2px;
+}
+
+/* ============================================
+   ANIMATIONS — Subtle entrance
+   ============================================ */
+@keyframes sv-slideUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.sv-animate-in {
+  animation: sv-slideUp 400ms ease forwards;
+}
+
+.sv-animate-delay-1 { animation-delay: 80ms; }
+.sv-animate-delay-2 { animation-delay: 160ms; }
+.sv-animate-delay-3 { animation-delay: 240ms; }
+
+/* ============================================
+   PRINT STYLES
+   ============================================ */
+@media print {
+  .sv-topbar,
+  .sv-filter-card,
+  .sv-teacher-banner,
+  .sv-footnote,
+  .sv-scroll-hint,
+  .ai-fab,
+  .ai-window { display: none !important; }
+  
+  .sv-timetable-card {
+    border: none;
+    box-shadow: none;
+  }
+}

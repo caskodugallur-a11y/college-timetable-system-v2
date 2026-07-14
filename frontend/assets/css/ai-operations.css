@@ -1,0 +1,502 @@
+/* ============================================
+   CAS KODUNGALLUR — AI OPERATIONS CENTER
+   Split Layout & Glassmorphic Chat Panel
+   ============================================ */
+
+/* ── Split Layout Container ── */
+#timetable-intelligence-module {
+    display: none;
+    gap: 24px;
+    align-items: stretch;
+    height: calc(100vh - 120px);
+    min-height: 550px;
+    overflow: hidden;
+}
+
+#timetable-intelligence-module.active {
+    display: flex;
+}
+
+
+/* ── Left Panel: AI Chat Command Center ── */
+.ti-ai-chat-panel {
+    width: 400px;
+    min-width: 360px;
+    max-width: 440px;
+    display: flex;
+    flex-direction: column;
+    background: var(--glass-bg);
+    backdrop-filter: blur(var(--blur-md));
+    -webkit-backdrop-filter: blur(var(--blur-md));
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+    overflow: hidden;
+    height: 100%;
+    transition: all var(--transition-base);
+}
+
+.ti-ai-chat-panel:hover {
+    box-shadow: var(--shadow-lg);
+    border-color: var(--glass-border-hover);
+}
+
+/* Chat Header */
+.ti-ai-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--glass-border);
+    background: rgba(255, 255, 255, 0.02);
+}
+
+.ti-ai-header-title {
+    font-size: 0.9375rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.ti-ai-header-status {
+    width: 8px;
+    height: 8px;
+    background: var(--success);
+    border-radius: var(--radius-full);
+    display: inline-block;
+    box-shadow: 0 0 8px var(--success-glow);
+}
+
+/* Chat Messages Log Area */
+.ti-ai-messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.ti-ai-messages::-webkit-scrollbar {
+    width: 4px;
+}
+
+.ti-ai-messages::-webkit-scrollbar-thumb {
+    background: var(--glass-border);
+    border-radius: 4px;
+}
+
+/* Message Bubble */
+.ti-ai-msg {
+    max-width: 85%;
+    padding: 12px 16px;
+    border-radius: var(--radius-md);
+    font-size: 0.8125rem;
+    line-height: 1.5;
+    animation: tiMsgIn 200ms ease forwards;
+}
+
+@keyframes tiMsgIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.ti-ai-msg-bot {
+    align-self: flex-start;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--glass-border);
+    color: var(--text-primary);
+    border-bottom-left-radius: 4px;
+}
+
+.ti-ai-msg-user {
+    align-self: flex-end;
+    background: var(--primary);
+    color: #FFFFFF;
+    border-bottom-right-radius: 4px;
+    box-shadow: 0 4px 12px var(--primary-glow);
+}
+
+/* Suggested Intent Chips */
+.ti-ai-suggestions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 10px 20px;
+    border-top: 1px solid var(--glass-border);
+    background: rgba(255, 255, 255, 0.01);
+}
+
+.ti-ai-chip {
+    padding: 6px 12px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-full);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.ti-ai-chip:hover {
+    color: var(--text-primary);
+    background: var(--glass-bg-hover);
+    border-color: var(--glass-border-hover);
+    transform: translateY(-1px);
+}
+
+/* Chat Input Section */
+.ti-ai-input-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 20px;
+    border-top: 1px solid var(--glass-border);
+    background: rgba(255, 255, 255, 0.02);
+}
+
+.ti-ai-input {
+    flex: 1;
+    padding: 10px 14px;
+    font-size: 0.8125rem;
+    font-family: inherit;
+    color: var(--text-primary);
+    background: rgba(0, 0, 0, 0.15);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-sm);
+    outline: none;
+    resize: none;
+    height: 38px;
+    max-height: 38px;
+    transition: all var(--transition-fast);
+}
+
+.ti-ai-input:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 2px var(--primary-glow);
+}
+
+.ti-ai-send-btn {
+    width: 38px;
+    height: 38px;
+    border: none;
+    border-radius: var(--radius-sm);
+    background: var(--primary);
+    color: #FFFFFF;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all var(--transition-fast);
+    box-shadow: 0 4px 10px var(--primary-glow);
+}
+
+.ti-ai-send-btn:hover {
+    background: var(--primary-dark);
+    transform: scale(1.05);
+}
+
+.ti-ai-send-btn:active {
+    transform: scale(0.95);
+}
+
+.ti-ai-send-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* ── Right Panel: Operations Cockpit ── */
+.ti-cockpit-panel {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow: hidden;
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+}
+
+.ti-cockpit-content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 24px;
+}
+
+.ti-cockpit-content::-webkit-scrollbar {
+    width: 6px;
+}
+
+.ti-cockpit-content::-webkit-scrollbar-thumb {
+    background: var(--glass-border);
+    border-radius: 4px;
+}
+
+/* Override existing active class to keep layout split */
+body .ti-section.active {
+    display: block !important;
+}
+
+body .ti-section {
+    display: none;
+}
+
+body .ti-section.active {
+    display: block;
+}
+
+/* ── Markdown, Table & Code block styles in Chat ── */
+.ti-ai-msg table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 8px 0;
+    font-size: 0.75rem;
+}
+
+.ti-ai-msg th, .ti-ai-msg td {
+    border: 1px solid var(--glass-border);
+    padding: 6px 8px;
+    text-align: left;
+}
+
+.ti-ai-msg th {
+    background: rgba(255, 255, 255, 0.05);
+    font-weight: 700;
+}
+
+.ti-ai-msg code {
+    font-family: monospace;
+    background: rgba(0,0,0,0.2);
+    padding: 2px 4px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+}
+
+.ti-ai-msg pre {
+    background: rgba(0,0,0,0.3);
+    padding: 10px;
+    border-radius: 6px;
+    overflow-x: auto;
+    margin: 8px 0;
+}
+
+.ti-ai-msg pre code {
+    background: transparent;
+    padding: 0;
+}
+
+/* ── Typing Indicator ── */
+.ti-ai-typing {
+    display: flex;
+    gap: 4px;
+    padding: 8px 12px;
+}
+
+.ti-ai-typing-dot {
+    width: 6px;
+    height: 6px;
+    background: var(--text-tertiary);
+    border-radius: 50%;
+    animation: tiTypingBounce 1.2s infinite ease-in-out;
+}
+
+.ti-ai-typing-dot:nth-child(2) { animation-delay: 150ms; }
+.ti-ai-typing-dot:nth-child(3) { animation-delay: 300ms; }
+
+@keyframes tiTypingBounce {
+    0%, 80%, 100% { transform: scale(0.6); opacity: 0.4; }
+    40% { transform: scale(1.1); opacity: 1; }
+}
+
+/* ── Confirmation Overlay / Card inside Chat ── */
+.ti-confirm-card {
+    background: rgba(239, 68, 68, 0.08);
+    border: 1px solid rgba(239, 68, 68, 0.25);
+    border-radius: var(--radius-md);
+    padding: 16px;
+    margin-top: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.ti-confirm-card.create {
+    background: rgba(59, 130, 246, 0.08);
+    border-color: rgba(59, 130, 246, 0.25);
+}
+
+.ti-confirm-title {
+    font-size: 0.8125rem;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.ti-confirm-desc {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+}
+
+.ti-confirm-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.ti-confirm-btn {
+    flex: 1;
+    padding: 6px 12px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    border: none;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.ti-confirm-btn.yes {
+    background: var(--danger);
+    color: #FFFFFF;
+}
+
+.ti-confirm-btn.yes.create {
+    background: var(--primary);
+}
+
+.ti-confirm-btn.no {
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-secondary);
+    border: 1px solid var(--glass-border);
+}
+
+.ti-confirm-btn:hover {
+    transform: translateY(-1px);
+}
+
+/* ── Light Mode Color Adjustments ── */
+[data-theme="light"] .ti-ai-chat-panel {
+    background: rgba(255, 255, 255, 0.85);
+}
+[data-theme="light"] .ti-ai-msg-bot {
+    background: rgba(0, 0, 0, 0.03);
+}
+[data-theme="light"] .ti-ai-input {
+    background: rgba(255, 255, 255, 0.8);
+}
+[data-theme="light"] .ti-ai-msg pre {
+    background: rgba(0,0,0,0.05);
+    color: #333;
+}
+[data-theme="light"] .ti-confirm-btn.no {
+    background: rgba(0, 0, 0, 0.03);
+}
+
+/* ── AI Config Floating Widget ── */
+.ti-config-btn {
+    position: absolute;
+    top: 14px;
+    right: 16px;
+    width: 32px;
+    height: 32px;
+    border: none;
+    background: transparent;
+    color: var(--text-tertiary);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-sm);
+    transition: all var(--transition-fast);
+}
+
+.ti-config-btn:hover {
+    background: rgba(255,255,255,0.05);
+    color: var(--text-primary);
+}
+
+.ti-config-overlay {
+    position: absolute;
+    top: 52px;
+    right: 16px;
+    width: 280px;
+    background: var(--glass-bg);
+    backdrop-filter: blur(var(--blur-md));
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-md);
+    padding: 16px;
+    display: none;
+    flex-direction: column;
+    gap: 12px;
+    z-index: 100;
+    box-shadow: var(--shadow-lg);
+}
+
+.ti-config-overlay.open {
+    display: flex;
+}
+
+.ti-config-title {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.ti-config-field {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.ti-config-label {
+    font-size: 0.6875rem;
+    font-weight: 600;
+    color: var(--text-tertiary);
+}
+
+.ti-config-input, .ti-config-select {
+    width: 100%;
+    padding: 6px 10px;
+    font-size: 0.75rem;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--glass-border);
+    background: rgba(0, 0, 0, 0.2);
+    color: var(--text-primary);
+    outline: none;
+}
+
+.ti-config-save {
+    padding: 6px 12px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    background: var(--primary);
+    color: #FFFFFF;
+    border: none;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: background var(--transition-fast);
+}
+
+.ti-config-save:hover {
+    background: var(--primary-dark);
+}
+
+/* ── Responsive Overrides ── */
+@media (max-width: 900px) {
+    #timetable-intelligence-module {
+        flex-direction: column;
+        height: auto;
+    }
+    .ti-ai-chat-panel {
+        width: 100%;
+        max-width: none;
+        height: 400px;
+    }
+    .ti-cockpit-panel {
+        height: 600px;
+    }
+}

@@ -1,0 +1,964 @@
+/* ============================================
+   TIMETABLE INTELLIGENCE MODULE — Stylesheet
+   Matches CAS Kodungallur Glassmorphism Design
+   ============================================ */
+
+/* ── Section Navigation Tabs ── */
+.ti-tabs {
+    display: flex;
+    gap: var(--space-xs);
+    overflow-x: auto;
+    padding-bottom: var(--space-sm);
+    margin-bottom: var(--space-lg);
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    border-bottom: 1px solid var(--glass-border);
+}
+.ti-tabs::-webkit-scrollbar { display: none; }
+
+.ti-tab {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 18px;
+    border: 1px solid transparent;
+    border-radius: var(--radius-full);
+    background: transparent;
+    color: var(--text-tertiary);
+    font-size: 0.8125rem;
+    font-weight: 500;
+    font-family: inherit;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all var(--transition-base);
+    flex-shrink: 0;
+}
+.ti-tab:hover {
+    background: var(--glass-bg-hover);
+    color: var(--text-secondary);
+}
+.ti-tab.active {
+    background: var(--primary);
+    color: #fff;
+    border-color: var(--primary);
+    box-shadow: 0 0 16px var(--primary-glow);
+}
+.ti-tab svg {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+}
+
+/* ── Section Panels ── */
+.ti-section {
+    display: none;
+    animation: tiFadeIn 0.35s ease;
+}
+.ti-section.active { display: block; }
+
+@keyframes tiFadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Cards (Glass) ── */
+.ti-card {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-lg);
+    backdrop-filter: blur(var(--blur-md));
+    -webkit-backdrop-filter: blur(var(--blur-md));
+    margin-bottom: var(--space-lg);
+    transition: border-color var(--transition-base);
+}
+.ti-card:hover {
+    border-color: var(--glass-border-hover);
+}
+.ti-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--space-lg);
+    flex-wrap: wrap;
+    gap: var(--space-sm);
+}
+.ti-card-title {
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.ti-card-title svg {
+    width: 20px;
+    height: 20px;
+    color: var(--primary-light);
+}
+.ti-card-subtitle {
+    font-size: 0.8125rem;
+    color: var(--text-tertiary);
+    margin-top: 2px;
+}
+
+/* ── Forms (extends existing .form-input / .form-label) ── */
+.ti-form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: var(--space-md);
+}
+.ti-form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+.ti-form-group label {
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+}
+.ti-form-group input,
+.ti-form-group select,
+.ti-form-group textarea {
+    padding: 10px 14px;
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-sm);
+    color: var(--text-primary);
+    font-size: 0.875rem;
+    font-family: inherit;
+    transition: all var(--transition-base);
+    outline: none;
+}
+.ti-form-group input:focus,
+.ti-form-group select:focus,
+.ti-form-group textarea:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px var(--primary-glow);
+}
+.ti-form-group input::placeholder {
+    color: var(--text-tertiary);
+}
+.ti-form-group select option {
+    background: #1a1a2e;
+    color: var(--text-primary);
+}
+.ti-form-actions {
+    display: flex;
+    gap: var(--space-sm);
+    margin-top: var(--space-md);
+    flex-wrap: wrap;
+}
+
+/* ── Toggle Switch ── */
+.ti-toggle {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    font-size: 0.8125rem;
+    color: var(--text-secondary);
+}
+.ti-toggle input { display: none; }
+.ti-toggle-track {
+    width: 36px;
+    height: 20px;
+    background: var(--glass-bg-active);
+    border-radius: var(--radius-full);
+    position: relative;
+    transition: background var(--transition-base);
+}
+.ti-toggle input:checked + .ti-toggle-track {
+    background: var(--primary);
+}
+.ti-toggle-track::after {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 16px;
+    height: 16px;
+    background: #fff;
+    border-radius: 50%;
+    transition: transform var(--transition-base);
+}
+.ti-toggle input:checked + .ti-toggle-track::after {
+    transform: translateX(16px);
+}
+
+/* ── Data Tables (within TI) ── */
+.ti-table-wrap {
+    overflow-x: auto;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--glass-border);
+}
+.ti-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.8125rem;
+}
+.ti-table th {
+    padding: 12px 16px;
+    text-align: left;
+    font-weight: 600;
+    color: var(--text-secondary);
+    background: var(--glass-bg);
+    border-bottom: 1px solid var(--glass-border);
+    white-space: nowrap;
+}
+.ti-table td {
+    padding: 12px 16px;
+    color: var(--text-primary);
+    border-bottom: 1px solid var(--glass-border);
+}
+.ti-table tbody tr {
+    transition: background var(--transition-fast);
+}
+.ti-table tbody tr:hover {
+    background: var(--glass-bg-hover);
+}
+.ti-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* ── Action Buttons (small) ── */
+.ti-btn-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-sm);
+    background: transparent;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+.ti-btn-icon:hover {
+    background: var(--glass-bg-hover);
+    color: var(--text-primary);
+    border-color: var(--glass-border-hover);
+}
+.ti-btn-icon.danger:hover {
+    background: rgba(239, 68, 68, 0.1);
+    color: var(--danger);
+    border-color: var(--danger);
+}
+.ti-btn-icon svg {
+    width: 16px;
+    height: 16px;
+}
+
+/* ── Faculty Allocation Matrix ── */
+.ti-matrix-controls {
+    display: flex;
+    gap: var(--space-sm);
+    margin-bottom: var(--space-md);
+    flex-wrap: wrap;
+    align-items: center;
+}
+.ti-allocation-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr auto;
+    gap: var(--space-sm);
+    padding: var(--space-sm) 0;
+    border-bottom: 1px solid var(--glass-border);
+    align-items: center;
+}
+.ti-allocation-row:last-child { border-bottom: none; }
+
+/* ── Rule Engine ── */
+.ti-rules-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: var(--space-md);
+}
+.ti-rule-card {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-md);
+    padding: var(--space-md);
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-md);
+    transition: all var(--transition-base);
+}
+.ti-rule-card:hover {
+    border-color: var(--glass-border-hover);
+}
+.ti-rule-number {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 32px;
+    height: 32px;
+    border-radius: var(--radius-sm);
+    background: var(--primary-glow);
+    color: var(--primary-light);
+    font-size: 0.75rem;
+    font-weight: 700;
+}
+.ti-rule-content {
+    flex: 1;
+}
+.ti-rule-title {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 4px;
+}
+.ti-rule-desc {
+    font-size: 0.75rem;
+    color: var(--text-tertiary);
+    line-height: 1.5;
+}
+.ti-rule-status {
+    font-size: 0.6875rem;
+    font-weight: 600;
+    padding: 3px 8px;
+    border-radius: var(--radius-full);
+    margin-top: 6px;
+    display: inline-block;
+}
+.ti-rule-status.pass {
+    background: rgba(34, 197, 94, 0.1);
+    color: var(--success);
+}
+.ti-rule-status.fail {
+    background: rgba(239, 68, 68, 0.1);
+    color: var(--danger);
+}
+.ti-rule-status.pending {
+    background: var(--glass-bg);
+    color: var(--text-tertiary);
+}
+
+/* ── Generate Button ── */
+.ti-generate-section {
+    text-align: center;
+    padding: var(--space-2xl) var(--space-lg);
+}
+.ti-generate-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    padding: 18px 48px;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+    color: #fff;
+    border: none;
+    border-radius: var(--radius-xl);
+    font-size: 1.125rem;
+    font-weight: 700;
+    font-family: inherit;
+    cursor: pointer;
+    transition: all var(--transition-base);
+    box-shadow: 0 4px 24px var(--primary-glow), 0 0 48px rgba(59, 130, 246, 0.15);
+    position: relative;
+    overflow: hidden;
+}
+.ti-generate-btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+    transform: translateX(-100%);
+    transition: transform 0.6s ease;
+}
+.ti-generate-btn:hover::before {
+    transform: translateX(100%);
+}
+.ti-generate-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 40px var(--primary-glow), 0 0 80px rgba(59, 130, 246, 0.2);
+}
+.ti-generate-btn:active {
+    transform: translateY(0);
+}
+.ti-generate-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+}
+.ti-generate-btn svg {
+    width: 24px;
+    height: 24px;
+}
+
+/* ── Progress Steps ── */
+.ti-progress-container {
+    margin-top: var(--space-xl);
+    display: none;
+}
+.ti-progress-container.active { display: block; }
+.ti-progress-bar-track {
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto var(--space-lg);
+    height: 6px;
+    background: var(--glass-bg-active);
+    border-radius: var(--radius-full);
+    overflow: hidden;
+}
+.ti-progress-bar-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, var(--primary), var(--primary-light));
+    border-radius: var(--radius-full);
+    transition: width 0.4s ease;
+}
+.ti-progress-steps {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+    max-width: 500px;
+    margin: 0 auto;
+    text-align: left;
+}
+.ti-progress-step {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    padding: 8px 12px;
+    border-radius: var(--radius-sm);
+    font-size: 0.8125rem;
+    color: var(--text-tertiary);
+    transition: all var(--transition-base);
+}
+.ti-progress-step.active {
+    color: var(--primary-light);
+    background: var(--primary-glow);
+}
+.ti-progress-step.done {
+    color: var(--success);
+}
+.ti-progress-step .step-icon {
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+.ti-progress-step .spinner {
+    width: 16px;
+    height: 16px;
+    border: 2px solid var(--glass-border);
+    border-top-color: var(--primary-light);
+    border-radius: 50%;
+    animation: tiSpin 0.6s linear infinite;
+}
+@keyframes tiSpin {
+    to { transform: rotate(360deg); }
+}
+
+/* ── Conflict Analyzer ── */
+.ti-conflicts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: var(--space-md);
+}
+.ti-conflict-card {
+    padding: var(--space-md);
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-md);
+}
+.ti-conflict-card.has-conflict {
+    border-color: rgba(239, 68, 68, 0.3);
+}
+.ti-conflict-card.no-conflict {
+    border-color: rgba(34, 197, 94, 0.3);
+}
+.ti-conflict-header {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    margin-bottom: var(--space-sm);
+}
+.ti-conflict-icon {
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-sm);
+    font-size: 1.125rem;
+}
+.ti-conflict-icon.error {
+    background: rgba(239, 68, 68, 0.1);
+    color: var(--danger);
+}
+.ti-conflict-icon.success {
+    background: rgba(34, 197, 94, 0.1);
+    color: var(--success);
+}
+.ti-conflict-icon.warning {
+    background: rgba(245, 158, 11, 0.1);
+    color: var(--warning);
+}
+.ti-conflict-title {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+.ti-conflict-count {
+    font-size: 0.75rem;
+    color: var(--text-tertiary);
+}
+.ti-conflict-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    max-height: 160px;
+    overflow-y: auto;
+}
+.ti-conflict-list li {
+    padding: 6px 0;
+    border-bottom: 1px solid var(--glass-border);
+}
+.ti-conflict-list li:last-child { border-bottom: none; }
+
+/* ── Timetable Preview Grid ── */
+.ti-preview-controls {
+    display: flex;
+    gap: var(--space-sm);
+    margin-bottom: var(--space-lg);
+    flex-wrap: wrap;
+    align-items: center;
+}
+.ti-preview-select {
+    padding: 8px 14px;
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-sm);
+    color: var(--text-primary);
+    font-size: 0.8125rem;
+    font-family: inherit;
+    outline: none;
+    cursor: pointer;
+}
+.ti-preview-select:focus {
+    border-color: var(--primary);
+}
+.ti-preview-select option {
+    background: #1a1a2e;
+}
+.ti-timetable-grid {
+    display: grid;
+    grid-template-columns: 90px repeat(var(--ti-days, 5), 1fr);
+    gap: 1px;
+    background: var(--glass-border);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    border: 1px solid var(--glass-border);
+}
+.ti-grid-header {
+    padding: 12px 8px;
+    background: var(--glass-bg-active);
+    color: var(--text-secondary);
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+.ti-grid-period {
+    padding: 10px 8px;
+    background: var(--glass-bg);
+    color: var(--text-secondary);
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+.ti-grid-period .time {
+    font-size: 0.625rem;
+    color: var(--text-tertiary);
+    font-weight: 400;
+}
+.ti-grid-cell {
+    padding: 8px;
+    background: var(--bg-primary);
+    min-height: 72px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    gap: 3px;
+    transition: background var(--transition-fast);
+}
+.ti-grid-cell:hover {
+    background: var(--glass-bg-hover);
+}
+.ti-grid-cell .subject-name {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--primary-light);
+    line-height: 1.3;
+}
+.ti-grid-cell .teacher-name {
+    font-size: 0.625rem;
+    color: var(--text-tertiary);
+}
+.ti-grid-cell .room-name {
+    font-size: 0.625rem;
+    color: var(--text-tertiary);
+    opacity: 0.7;
+}
+.ti-grid-cell.lunch {
+    background: rgba(245, 158, 11, 0.05);
+    color: var(--warning);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+}
+.ti-grid-cell.lab-session {
+    border-left: 3px solid var(--success);
+}
+.ti-grid-cell.empty {
+    color: var(--text-tertiary);
+    font-size: 0.6875rem;
+}
+
+/* ── Approval Workflow Pipeline ── */
+.ti-workflow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    margin: var(--space-xl) 0;
+    flex-wrap: wrap;
+}
+.ti-workflow-step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    padding: 0 var(--space-md);
+    position: relative;
+}
+.ti-workflow-dot {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.875rem;
+    font-weight: 700;
+    border: 2px solid var(--glass-border);
+    background: var(--glass-bg);
+    color: var(--text-tertiary);
+    transition: all var(--transition-base);
+}
+.ti-workflow-step.completed .ti-workflow-dot {
+    background: var(--success);
+    border-color: var(--success);
+    color: #fff;
+}
+.ti-workflow-step.current .ti-workflow-dot {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: #fff;
+    box-shadow: 0 0 20px var(--primary-glow);
+}
+.ti-workflow-label {
+    font-size: 0.6875rem;
+    font-weight: 500;
+    color: var(--text-tertiary);
+    text-align: center;
+    white-space: nowrap;
+}
+.ti-workflow-step.completed .ti-workflow-label,
+.ti-workflow-step.current .ti-workflow-label {
+    color: var(--text-secondary);
+}
+.ti-workflow-line {
+    width: 48px;
+    height: 2px;
+    background: var(--glass-border);
+    flex-shrink: 0;
+}
+.ti-workflow-line.completed {
+    background: var(--success);
+}
+
+/* ── Version History ── */
+.ti-version-row {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+    padding: var(--space-md);
+    border-bottom: 1px solid var(--glass-border);
+    transition: background var(--transition-fast);
+}
+.ti-version-row:hover {
+    background: var(--glass-bg-hover);
+}
+.ti-version-row:last-child { border-bottom: none; }
+.ti-version-badge {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 40px;
+    height: 28px;
+    border-radius: var(--radius-sm);
+    background: var(--primary-glow);
+    color: var(--primary-light);
+    font-size: 0.75rem;
+    font-weight: 700;
+}
+.ti-version-info {
+    flex: 1;
+}
+.ti-version-date {
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: var(--text-primary);
+}
+.ti-version-meta {
+    font-size: 0.6875rem;
+    color: var(--text-tertiary);
+    margin-top: 2px;
+}
+.ti-version-status {
+    font-size: 0.6875rem;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: var(--radius-full);
+}
+.ti-version-status.published {
+    background: rgba(34, 197, 94, 0.1);
+    color: var(--success);
+}
+.ti-version-status.draft {
+    background: var(--glass-bg);
+    color: var(--text-tertiary);
+}
+.ti-version-status.archived {
+    background: rgba(245, 158, 11, 0.1);
+    color: var(--warning);
+}
+
+/* ── Stats Row ── */
+.ti-stats-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: var(--space-md);
+    margin-bottom: var(--space-lg);
+}
+.ti-stat {
+    padding: var(--space-md);
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-md);
+    text-align: center;
+}
+.ti-stat-value {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--text-primary);
+}
+.ti-stat-label {
+    font-size: 0.75rem;
+    color: var(--text-tertiary);
+    margin-top: 4px;
+}
+
+/* ── Empty States ── */
+.ti-empty {
+    text-align: center;
+    padding: var(--space-2xl);
+    color: var(--text-tertiary);
+}
+.ti-empty svg {
+    width: 48px;
+    height: 48px;
+    margin-bottom: var(--space-md);
+    opacity: 0.3;
+}
+.ti-empty-text {
+    font-size: 0.875rem;
+    margin-bottom: var(--space-sm);
+}
+.ti-empty-hint {
+    font-size: 0.75rem;
+}
+
+/* ── Buttons (match existing .btn system) ── */
+.ti-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-sm);
+    background: var(--glass-bg);
+    color: var(--text-primary);
+    font-size: 0.8125rem;
+    font-weight: 500;
+    font-family: inherit;
+    cursor: pointer;
+    transition: all var(--transition-base);
+}
+.ti-btn:hover {
+    background: var(--glass-bg-hover);
+    border-color: var(--glass-border-hover);
+}
+.ti-btn svg {
+    width: 16px;
+    height: 16px;
+}
+.ti-btn-primary {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: #fff;
+}
+.ti-btn-primary:hover {
+    background: var(--primary-dark);
+    border-color: var(--primary-dark);
+}
+.ti-btn-success {
+    background: var(--success);
+    border-color: var(--success);
+    color: #fff;
+}
+.ti-btn-success:hover {
+    background: #16a34a;
+    border-color: #16a34a;
+}
+.ti-btn-danger {
+    background: transparent;
+    border-color: var(--danger);
+    color: var(--danger);
+}
+.ti-btn-danger:hover {
+    background: rgba(239, 68, 68, 0.1);
+}
+.ti-btn-sm {
+    padding: 5px 10px;
+    font-size: 0.75rem;
+}
+
+/* ── Notification/Toast within TI ── */
+.ti-notice {
+    padding: var(--space-md);
+    border-radius: var(--radius-md);
+    font-size: 0.8125rem;
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-sm);
+    margin-bottom: var(--space-md);
+}
+.ti-notice.info {
+    background: rgba(59, 130, 246, 0.08);
+    border: 1px solid rgba(59, 130, 246, 0.2);
+    color: var(--primary-light);
+}
+.ti-notice.warning {
+    background: rgba(245, 158, 11, 0.08);
+    border: 1px solid rgba(245, 158, 11, 0.2);
+    color: var(--warning);
+}
+.ti-notice.success {
+    background: rgba(34, 197, 94, 0.08);
+    border: 1px solid rgba(34, 197, 94, 0.2);
+    color: var(--success);
+}
+.ti-notice.error {
+    background: rgba(239, 68, 68, 0.08);
+    border: 1px solid rgba(239, 68, 68, 0.2);
+    color: var(--danger);
+}
+
+/* ── Modal Override for TI ── */
+.ti-modal-body {
+    max-height: 70vh;
+    overflow-y: auto;
+    padding-right: var(--space-sm);
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+    .ti-form-grid {
+        grid-template-columns: 1fr;
+    }
+    .ti-rules-grid {
+        grid-template-columns: 1fr;
+    }
+    .ti-conflicts-grid {
+        grid-template-columns: 1fr;
+    }
+    .ti-stats-row {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .ti-allocation-row {
+        grid-template-columns: 1fr;
+        gap: var(--space-xs);
+    }
+    .ti-workflow {
+        flex-direction: column;
+    }
+    .ti-workflow-line {
+        width: 2px;
+        height: 24px;
+    }
+    .ti-timetable-grid {
+        font-size: 0.6875rem;
+        min-width: 800px;
+    }
+    #ti-preview-content {
+        overflow-x: auto;
+    }
+    .ti-table td {
+        white-space: nowrap;
+    }
+    .ti-generate-btn {
+        padding: 14px 32px;
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 600px) {
+    .ti-card-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--space-sm);
+    }
+    .ti-card-header button, .ti-card-header a {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .ti-stats-row {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ── Print Styles ── */
+@media print {
+    .ti-tabs, .ti-form-actions, .ti-btn,
+    .ti-generate-section, .ti-workflow,
+    .sidebar, .top-bar, .top-header,
+    .bottom-nav {
+        display: none !important;
+    }
+    .ti-timetable-grid {
+        border: 1px solid #333;
+    }
+    .ti-grid-cell {
+        border: 1px solid #ddd;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+}

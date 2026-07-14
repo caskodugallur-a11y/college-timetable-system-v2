@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#060A16">
+    <meta name="description" content="Admin Login — CAS Kodungallur ScheduleFlow Timetable Management System">
+    <title>Sign In — CAS Kodungallur</title>
+    <link rel="stylesheet" href="../assets/css/glass-design.css">
+    <link rel="stylesheet" href="../assets/css/3d-effects.css">
+    <!-- GSAP -->
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+</head>
+<body class="login-page">
+    <!-- 3D Canvas Background -->
+    <canvas id="bg3d" aria-hidden="true"></canvas>
+
+    <!-- Mouse Aura -->
+    <div id="aura" aria-hidden="true"></div>
+
+    <!-- Login Card Wrapper (perspective container) -->
+    <div id="loginCardWrapper">
+        <!-- Login Card -->
+        <div class="login-card" id="loginCard">
+            <div class="login-card-header">
+                <div class="login-logo">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                        <line x1="16" y1="2" x2="16" y2="6"/>
+                        <line x1="8" y1="2" x2="8" y2="6"/>
+                        <line x1="3" y1="10" x2="21" y2="10"/>
+                    </svg>
+                </div>
+                <h1>Welcome back</h1>
+                <p>CAS Kodungallur — Admin Dashboard</p>
+            </div>
+
+            <form id="loginForm">
+                <div class="form-group" id="usernameGroup">
+                    <label class="form-label" for="username">Username</label>
+                    <input type="text" id="username" name="username" class="form-input" 
+                           placeholder="Enter your username" required autocomplete="username" autofocus>
+                </div>
+
+                <div class="form-group" id="passwordGroup">
+                    <label class="form-label" for="password">Password</label>
+                    <input type="password" id="password" name="password" class="form-input" 
+                           placeholder="Enter your password" required autocomplete="current-password">
+                </div>
+
+                <div id="errorMessage" style="display: none; padding: 12px 16px; background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.2); border-radius: var(--radius-md); color: var(--danger); font-size: 0.875rem; margin-bottom: var(--space-lg);"></div>
+
+                <button type="submit" class="btn btn-primary btn-full btn-lg btn-shimmer" id="loginSubmitBtn">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                        <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                    </svg>
+                    Sign In
+                </button>
+            </form>
+
+            <div class="login-card-footer">
+                <a href="../index.html">← Back to Home</a>
+            </div>
+        </div>
+    </div>
+
+    <script src="../assets/js/app.js"></script>
+    <script src="../assets/js/cursor.js"></script>
+    <script src="../assets/js/gsap-animations.js"></script>
+
+    <!-- Three.js ES Module -->
+    <script type="module">
+        import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js';
+        window.THREE = THREE;
+
+        window.addEventListener('load', () => {
+            // Import ThreeBG after THREE is ready
+            const script = document.createElement('script');
+            script.src = '../assets/js/three-bg.js';
+            script.onload = () => {
+                const bg = new ThreeBG('bg3d');
+                bg.init({
+                    shapeCount: 40,
+                    cameraZ: 18,
+                    cameraParallax: 0.2,
+                    torusKnot: true
+                });
+            };
+            document.head.appendChild(script);
+        });
+    </script>
+
+    <script>
+        window.addEventListener('load', function() {
+            // Aura + cursor
+            GSAPAnimations.initAura();
+
+            // Card 3D entry animation
+            GSAPAnimations.loginCardEnter(document.getElementById('loginCard'));
+
+            // Input focus 3D lift
+            GSAPAnimations.initInputFocus();
+
+            // Card tilt effect
+            const card = document.getElementById('loginCard');
+            const wrapper = document.getElementById('loginCardWrapper');
+            let tiltRAF = null;
+            let targetX = 0, targetY = 0, currentX = 0, currentY = 0;
+            let isHover = false;
+
+            if (navigator.maxTouchPoints === 0) {
+                card.addEventListener('mouseenter', () => { isHover = true; startTilt(); });
+                card.addEventListener('mousemove', (e) => {
+                    const rect = card.getBoundingClientRect();
+                    const cx = rect.left + rect.width / 2;
+                    const cy = rect.top + rect.height / 2;
+                    const dx = (e.clientX - cx) / (rect.width / 2);
+                    const dy = (e.clientY - cy) / (rect.height / 2);
+                    targetX = dy * 10;
+                    targetY = -dx * 10;
+                });
+                card.addEventListener('mouseleave', () => {
+                    isHover = false;
+                    targetX = 0;
+                    targetY = 0;
+                    gsap.to(card, { rotateX: 0, rotateY: 0, duration: 0.8, ease: 'power2.out' });
+                });
+            }
+
+            function startTilt() {
+                if (!tiltRAF) {
+                    (function tick() {
+                        currentX += (targetX - currentX) * 0.1;
+                        currentY += (targetY - currentY) * 0.1;
+                        if (isHover || Math.abs(currentX) > 0.01) {
+                            card.style.transform = `perspective(1200px) rotateX(${currentX}deg) rotateY(${currentY}deg)`;
+                            tiltRAF = requestAnimationFrame(tick);
+                        } else {
+                            tiltRAF = null;
+                        }
+                    })();
+                }
+            }
+        });
+
+        // Login form
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const errorDiv = document.getElementById('errorMessage');
+            
+            const submitBtn = document.getElementById('loginSubmitBtn');
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="animation: spin 0.8s linear infinite;"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg> Signing in...';
+
+            try {
+                await new Promise(r => setTimeout(r, 800));
+                
+                if (username === 'admin' && password === 'admin123') {
+                    localStorage.setItem('adminToken', 'demo-token-' + Date.now());
+                    localStorage.setItem('adminUsername', username);
+                    
+                    if (window.Toast) {
+                        window.Toast.success('Welcome back, Admin!');
+                    }
+                    
+                    // Particle burst + card exit animation
+                    GSAPAnimations.loginParticleBurst(submitBtn, () => {
+                        window.location.href = 'dashboard.html';
+                    });
+
+                } else {
+                    errorDiv.textContent = 'Invalid username or password. Please try again.';
+                    errorDiv.style.display = 'block';
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> Sign In';
+                    
+                    // Shake card
+                    gsap.fromTo('#loginCard', 
+                        { x: -10 }, 
+                        { x: 0, duration: 0.5, ease: 'elastic.out(1, 0.3)' }
+                    );
+                }
+            } catch (error) {
+                errorDiv.textContent = 'Login failed: ' + error.message;
+                errorDiv.style.display = 'block';
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> Sign In';
+            }
+        });
+
+        // Clear error on input
+        document.querySelectorAll('#loginForm input').forEach(input => {
+            input.addEventListener('input', () => {
+                document.getElementById('errorMessage').style.display = 'none';
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,557 @@
+/* ============================================
+   3D EFFECTS SYSTEM — CAS Kodungallur
+   Layered on top of glass-design.css
+   ============================================ */
+
+/* ============================================
+   CUSTOM CURSOR — Desktop Only
+   ============================================ */
+#cursor-dot {
+  position: fixed;
+  width: 12px;
+  height: 12px;
+  background: var(--primary);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 99999;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 10px rgba(59,130,246,0.8), 0 0 20px rgba(59,130,246,0.4);
+  transition: width 0.2s, height 0.2s, background 0.2s;
+  will-change: transform;
+}
+
+#cursor-ring {
+  position: fixed;
+  width: 32px;
+  height: 32px;
+  border: 1.5px solid rgba(59,130,246,0.6);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 99998;
+  transform: translate(-50%, -50%);
+  transition: width 0.3s cubic-bezier(0.16,1,0.3,1),
+              height 0.3s cubic-bezier(0.16,1,0.3,1),
+              background 0.3s,
+              border-color 0.3s;
+  will-change: transform;
+}
+
+#cursor-ring.expanded {
+  width: 48px;
+  height: 48px;
+  background: rgba(59,130,246,0.1);
+  border-color: rgba(59,130,246,0.8);
+}
+
+/* ============================================
+   MOUSE AURA — ambient light following cursor
+   ============================================ */
+#aura {
+  position: fixed;
+  width: 400px;
+  height: 400px;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+  background: radial-gradient(circle 200px at center,
+    rgba(59,130,246,0.06),
+    transparent);
+  transform: translate(-50%, -50%);
+  will-change: left, top;
+}
+
+/* ============================================
+   3D TILT CARD BASE
+   ============================================ */
+.tilt-card {
+  transform-style: preserve-3d;
+  will-change: transform;
+  position: relative;
+}
+
+.tilt-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    circle at var(--mx, 50%) var(--my, 50%),
+    rgba(255,255,255,0.14),
+    transparent 60%
+  );
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s;
+  border-radius: inherit;
+}
+
+.tilt-card:hover::after {
+  opacity: 1;
+}
+
+/* ============================================
+   FLIP CARD SYSTEM — Student Timetable
+   ============================================ */
+.flip-card-wrapper {
+  perspective: 800px;
+  width: 100%;
+  height: 100%;
+}
+
+.flip-card {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: pointer;
+  will-change: transform;
+}
+
+.flip-card:hover,
+.flip-card.flipped {
+  transform: rotateY(180deg);
+}
+
+.flip-card-front,
+.flip-card-back {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  border-radius: var(--radius-sm);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 8px;
+}
+
+.flip-card-front {
+  background: linear-gradient(135deg, rgba(59,130,246,0.10), rgba(59,130,246,0.04));
+  border: 1px solid rgba(59,130,246,0.15);
+}
+
+.flip-card-back {
+  background: linear-gradient(135deg, rgba(139,92,246,0.15), rgba(139,92,246,0.05));
+  border: 1px solid rgba(139,92,246,0.2);
+  transform: rotateY(180deg);
+}
+
+.flip-card-front .slot-subject {
+  font-size: 0.8125rem;
+  font-weight: 700;
+  color: var(--primary-light);
+  text-align: center;
+}
+
+.flip-card-front .slot-teacher {
+  font-size: 0.6875rem;
+  color: var(--text-secondary);
+  text-align: center;
+}
+
+.flip-card-back .slot-teacher-name {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: #C4B5FD;
+  text-align: center;
+}
+
+.flip-card-back .slot-subject-full {
+  font-size: 0.6875rem;
+  color: var(--text-secondary);
+  text-align: center;
+}
+
+.flip-card-back .flip-hint {
+  font-size: 0.5625rem;
+  color: var(--text-tertiary);
+  margin-top: 4px;
+}
+
+/* ============================================
+   3D HERO TYPOGRAPHY
+   ============================================ */
+.hero-3d-text {
+  font-size: clamp(3rem, 8vw, 6rem);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 1.0;
+  text-shadow:
+    0 1px 0 #1e3a8a,
+    0 2px 0 #1d4ed8,
+    0 3px 0 #2563eb,
+    0 4px 0 #3b82f6,
+    0 5px 0 #60a5fa,
+    0 6px 6px rgba(0,0,0,0.4),
+    0 10px 20px rgba(59,130,246,0.3);
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+[data-theme="light"] .hero-3d-text {
+  text-shadow:
+    0 1px 0 #93c5fd,
+    0 2px 0 #60a5fa,
+    0 3px 0 #3b82f6,
+    0 4px 4px rgba(0,0,0,0.15),
+    0 6px 12px rgba(59,130,246,0.2);
+}
+
+/* ============================================
+   3D BUTTON SYSTEM
+   ============================================ */
+.btn-3d {
+  transform-style: preserve-3d;
+  perspective: 600px;
+  will-change: transform;
+}
+
+.btn-3d.btn-primary {
+  box-shadow:
+    0 0 30px rgba(59,130,246,0.5),
+    0 10px 40px rgba(59,130,246,0.3),
+    inset 0 1px 0 rgba(255,255,255,0.2);
+}
+
+/* Shimmer sweep on button */
+.btn-shimmer {
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-shimmer::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    105deg,
+    transparent 40%,
+    rgba(255,255,255,0.25) 50%,
+    transparent 60%
+  );
+  transform: translateX(-100%);
+  transition: none;
+}
+
+.btn-shimmer:hover::after {
+  animation: shimmerBtn 0.6s ease forwards;
+}
+
+@keyframes shimmerBtn {
+  from { transform: translateX(-100%); }
+  to   { transform: translateX(200%); }
+}
+
+/* ============================================
+   STAT WIDGET 3D
+   ============================================ */
+.stat-widget {
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+/* ============================================
+   TIMETABLE CELL 3D
+   ============================================ */
+.timetable-cell {
+  transform-style: preserve-3d;
+}
+
+/* Teacher highlight glow — applied via JS */
+.teacher-highlighted {
+  box-shadow: 0 0 10px var(--primary), 0 0 25px rgba(59,130,246,0.4) !important;
+  border-color: var(--primary) !important;
+  background: rgba(59,130,246,0.08) !important;
+  z-index: 5;
+}
+
+/* Current day neon glow column header */
+.day-today-header {
+  color: var(--primary-light) !important;
+  box-shadow:
+    0 0 10px rgba(59,130,246,0.6),
+    0 0 30px rgba(59,130,246,0.3),
+    inset 0 0 10px rgba(59,130,246,0.1);
+  background: rgba(59,130,246,0.08) !important;
+}
+
+/* ============================================
+   MODAL 3D
+   ============================================ */
+.modal {
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+/* ============================================
+   TOAST 3D
+   ============================================ */
+.toast {
+  transform-style: preserve-3d;
+  will-change: transform, opacity;
+}
+
+/* ============================================
+   SIDEBAR 3D DEPTH
+   ============================================ */
+.sidebar {
+  box-shadow:
+    4px 0 40px rgba(0,0,0,0.5),
+    inset -1px 0 0 rgba(255,255,255,0.04);
+}
+
+/* ============================================
+   3D CHART FRAME
+   ============================================ */
+.chart-container {
+  transform-style: preserve-3d;
+  position: relative;
+}
+
+.chart-container::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: var(--radius-lg);
+  background: linear-gradient(
+    135deg,
+    rgba(59,130,246,0.15) 0%,
+    rgba(139,92,246,0.08) 50%,
+    rgba(59,130,246,0.05) 100%
+  );
+  z-index: -1;
+  pointer-events: none;
+}
+
+/* ============================================
+   QUICK ACTION BUTTON 3D
+   ============================================ */
+.quick-action-btn {
+  will-change: transform;
+  transform-style: preserve-3d;
+}
+
+.quick-action-btn svg {
+  will-change: transform;
+  transition: none;
+}
+
+/* ============================================
+   LOGIN CARD 3D
+   ============================================ */
+#loginCardWrapper {
+  perspective: 1200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+.login-card {
+  transform-style: preserve-3d;
+  will-change: transform;
+  position: relative;
+}
+
+.login-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg,
+    transparent,
+    rgba(59,130,246,0.6),
+    rgba(139,92,246,0.4),
+    transparent
+  );
+  border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+  transition: opacity 0.3s;
+}
+
+/* ============================================
+   FORM GROUP 3D FOCUS
+   ============================================ */
+.form-group {
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+/* ============================================
+   LANDING NAV 3D SCROLL STATE
+   ============================================ */
+.landing-nav {
+  will-change: background, box-shadow;
+  transition: background 0.4s, box-shadow 0.4s, backdrop-filter 0.4s;
+}
+
+.landing-nav.scrolled {
+  background: rgba(6,10,22,0.85);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+  backdrop-filter: blur(40px) saturate(200%);
+  -webkit-backdrop-filter: blur(40px) saturate(200%);
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+/* ============================================
+   LANDING LOGO ICON 3D
+   ============================================ */
+.landing-logo-icon {
+  transform-style: preserve-3d;
+  will-change: transform;
+  filter: drop-shadow(0 0 8px rgba(59,130,246,0.6));
+}
+
+/* ============================================
+   LANDING FEATURES CONTAINER 3D
+   ============================================ */
+.landing-features {
+  transform-style: preserve-3d;
+  perspective: var(--perspective-md, 1000px);
+}
+
+/* ============================================
+   PARTICLE BURST — Login success
+   ============================================ */
+.particle-burst {
+  position: fixed;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 99999;
+  will-change: transform, opacity;
+}
+
+/* ============================================
+   TEACHER FILTER — Student View
+   ============================================ */
+.teacher-filter-section {
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--blur-lg));
+  -webkit-backdrop-filter: blur(var(--blur-lg));
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg);
+  margin-bottom: var(--space-lg);
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+.teacher-filter-section .section-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  margin-bottom: var(--space-sm);
+}
+
+.teacher-schedule-panel {
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--blur-lg));
+  -webkit-backdrop-filter: blur(var(--blur-lg));
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  margin-top: var(--space-lg);
+  display: none;
+}
+
+.teacher-schedule-panel.active {
+  display: block;
+  animation: fadeUp 0.4s cubic-bezier(0.16,1,0.3,1) forwards;
+}
+
+.teacher-schedule-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-md) var(--space-lg);
+  border-bottom: 1px solid var(--glass-border);
+}
+
+.teacher-schedule-header h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.teacher-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  background: rgba(59,130,246,0.12);
+  border: 1px solid rgba(59,130,246,0.2);
+  border-radius: var(--radius-full);
+  color: var(--primary-light);
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.teacher-schedule-body {
+  padding: var(--space-lg);
+  overflow-x: auto;
+}
+
+/* ============================================
+   CANVAS BACKGROUND
+   ============================================ */
+#bg3d {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -1;
+  pointer-events: none;
+  transform: translateZ(0);
+  opacity: 1;
+}
+
+/* ============================================
+   GPU PERFORMANCE UTILITIES
+   ============================================ */
+.will-change-transform {
+  will-change: transform;
+}
+
+.gpu-layer {
+  transform: translateZ(0);
+}
+
+/* ============================================
+   LANDING HERO SECTION 3D
+   ============================================ */
+.landing-hero {
+  background: var(--gradient-hero, #060A16);
+}
+
+/* ============================================
+   DASHBOARD STATS GRID 3D
+   ============================================ */
+.stats-grid {
+  perspective: 800px;
+}
+
+/* ============================================
+   LANDING PAGE FEATURE ICON 3D GLOW
+   ============================================ */
+.landing-feature-icon {
+  filter: drop-shadow(0 0 6px rgba(59,130,246,0.5));
+  transition: filter var(--transition-base);
+}
+
+.landing-feature:hover .landing-feature-icon {
+  filter: drop-shadow(0 0 12px rgba(59,130,246,0.8));
+}

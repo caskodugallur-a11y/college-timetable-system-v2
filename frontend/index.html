@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#060A16">
+    <meta name="description" content="CAS Kodungallur ScheduleFlow — Intelligent timetable management for the IHRD campus. AI-powered scheduling, faculty management, and real-time analytics.">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>CAS Kodungallur — ScheduleFlow Timetable Management</title>
+    <link rel="stylesheet" href="assets/css/glass-design.css">
+    <link rel="stylesheet" href="assets/css/3d-effects.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- GSAP -->
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+</head>
+<body>
+    <!-- 3D Canvas Background -->
+    <canvas id="bg3d" aria-hidden="true"></canvas>
+
+    <!-- Mouse Aura -->
+    <div id="aura" aria-hidden="true"></div>
+
+    <div class="landing-page">
+        <!-- Navigation -->
+        <nav class="landing-nav" id="landingNav">
+            <div class="live-datetime" style="margin-right: auto; margin-left: 0;">
+                <span id="liveTime" class="live-time"></span>
+                <span id="liveDate" class="live-date"></span>
+            </div>
+            <div class="landing-nav-links">
+                <button id="themeToggleLanding" class="theme-switcher" aria-label="Toggle theme">
+                    <svg id="themeIconLanding" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+                    </svg>
+                </button>
+            </div>
+        </nav>
+
+        <!-- Redesigned Hero Section (Split Layout) -->
+        <section class="landing-split-container">
+            <div class="college-main-content">
+                <!-- Mobile Inline Image of the College -->
+                <img src="assets/images/college_bg.png" alt="CAS Kodungallur Building" class="mobile-college-hero-img">
+
+                <h1 id="heroTitle" class="college-title-main">
+                    CAS <span class="blue-accent">Kodungallur</span>
+                </h1>
+                
+                <div id="heroSubtitle">
+                    <p class="college-subtitle-main">College of Applied Science Kodungallur - IHRD Campus</p>
+                    <p class="college-description-main">
+                        College of Applied Science, Kodungallur—Intelligent timetable management for the IHRD campus. Experience scheduling that feels premium, intuitive, and effortless.
+                    </p>
+                </div>
+                
+                <div class="custom-button-group" id="heroButtons">
+                    <a href="pages/login.html" class="custom-btn-admin btn-3d" id="adminLoginBtn">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                            <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                        </svg>
+                        Admin Login
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-left: auto;">
+                            <line x1="5" y1="12" x2="19" y2="12"/>
+                            <polyline points="12 5 19 12 12 19"/>
+                        </svg>
+                    </a>
+                    <a href="pages/student-view.html" class="custom-btn-student btn-3d" id="studentViewBtn">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
+                            <path d="M6 12v5c3 3 9 3 12 0v-5"/>
+                        </svg>
+                        Student View
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-left: auto;">
+                            <line x1="5" y1="12" x2="19" y2="12"/>
+                            <polyline points="12 5 19 12 12 19"/>
+                        </svg>
+                    </a>
+                </div>
+
+                <div class="custom-feature-grid" id="featuresGrid">
+                    <div class="landing-feature custom-feature-card tilt-card" id="feature1">
+                        <div class="custom-feature-icon">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                                <line x1="16" y1="2" x2="16" y2="6"/>
+                                <line x1="8" y1="2" x2="8" y2="6"/>
+                                <line x1="3" y1="10" x2="21" y2="10"/>
+                                <path d="M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01M16 18h.01"/>
+                            </svg>
+                        </div>
+                        <h3>Smart Scheduling</h3>
+                        <p>AI-Powered timetable generation with conflict detection.</p>
+                    </div>
+                    <div class="landing-feature custom-feature-card tilt-card" id="feature2">
+                        <div class="custom-feature-icon">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                                <circle cx="9" cy="7" r="4"/>
+                                <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                                <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                            </svg>
+                        </div>
+                        <h3>Faculty Management</h3>
+                        <p>Comprehensive teacher profile and workload tracking.</p>
+                    </div>
+                    <div class="landing-feature custom-feature-card tilt-card" id="feature3">
+                        <div class="custom-feature-icon">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M3 3v18h18"/>
+                                <path d="M18.7 8l-5.1 5.2-2.8-2.7L7 14.3"/>
+                            </svg>
+                        </div>
+                        <h3>Analytics & Reports</h3>
+                        <p>Real-time insights and exportable data and visualisation.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="landing-footer">
+            <p>College of Applied Science, Kodungallur &mdash; IHRD</p>
+        </footer>
+    </div>
+
+    <script src="assets/js/app.js"></script>
+    <script src="assets/js/cursor.js"></script>
+    <script src="assets/js/tilt-effect.js"></script>
+    <script src="assets/js/gsap-animations.js"></script>
+
+    <!-- Three.js ES Module + ThreeBG init -->
+    <script type="module">
+        import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js';
+        window.THREE = THREE;
+
+        window.addEventListener('load', () => {
+            const bg = new ThreeBG('bg3d');
+            bg.init({ shapeCount: 100, cameraParallax: 0.3 });
+        });
+    </script>
+
+    <script>
+        // Register ScrollTrigger
+        gsap.registerPlugin(ScrollTrigger);
+
+        window.addEventListener('load', function() {
+            // Cinematic page enter
+            GSAPAnimations.pageEnter({
+                title: '#heroTitle',
+                subtitle: '#heroSubtitle',
+                stagger: '#heroButtons, #featuresGrid'
+            });
+
+            // Scroll-driven card animations
+            GSAPAnimations.initScrollCards();
+
+            // Nav scroll frosted glass
+            GSAPAnimations.initNavScroll(document.getElementById('landingNav'));
+
+            // 3D tilt on feature cards
+            const tilt = new TiltEffect();
+            tilt.init('.landing-feature.tilt-card', { maxX: 12, maxY: 12, scale: 1.04, speed: 0.08 });
+
+            // CTA button 3D press
+            GSAPAnimations.initCTAButtons();
+
+            // Aura effect
+            GSAPAnimations.initAura();
+        });
+    </script>
+</body>
+</html>
+ 
