@@ -4,12 +4,13 @@
 // ============================================
 
 const API_CONFIG = {
-    BASE_URL: 'http://127.0.0.1:5000/api',
+    BASE_URL: window.location.origin + '/api',
     TIMEOUT: 8000,
     DEFAULT_HEADERS: {
         'Content-Type': 'application/json',
         'Accept': 'application/json'
     }
+
 };
 
 /**
