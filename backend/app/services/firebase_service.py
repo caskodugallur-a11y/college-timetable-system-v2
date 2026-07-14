@@ -10,7 +10,6 @@ from typing import Any, Dict, List, Optional
 from datetime import datetime
 import firebase_admin
 from firebase_admin import credentials, firestore
-
 logger = logging.getLogger(__name__)
 
 class FirebaseService:
@@ -30,52 +29,37 @@ class FirebaseService:
         if cls._instance is None:
             cls._instance = super(FirebaseService, cls).__new__(cls)
         return cls._instance
-    
+
     def __init__(self):
         """Initialize Firebase Admin SDK"""
         if FirebaseService._db is not None:
             return
-        
+
         try:
-           import json
+            if not firebase_admin._apps:
+                service_account_json = os.getenv("FIREBASE_SERVICE_ACCOUNT_JSON")
 
-# Initialize Firebase Admin SDK only once
-if not firebase_admin._apps:
-
-    # ---------- Render ----------
-    service_account_json = os.getenv("FIREBASE_SERVICE_ACCOUNT_JSON")
-
-    if service_account_json:
-        cred = credentials.Certificate(json.loads(service_account_json))
-
-    # ---------- Local Development ----------
-    else:
-        service_account_path = os.getenv(
-            "FIREBASE_SERVICE_ACCOUNT_KEY",
-            "serviceAccountKey.json"
-        )
-
-        if not os.path.isabs(service_account_path):
-            service_account_path = os.path.join(
-                os.path.dirname(
-                    os.path.dirname(
-                        os.path.dirname(__file__)
+                if service_account_json:
+                    service_account_info = json.loads(service_account_json)
+                    cred = credentials.Certificate(service_account_info)
+                else:
+                    base_dir = os.path.dirname(
+                        os.path.dirname(
+                            os.path.dirname(os.path.abspath(__file__))
+                        )
                     )
-                ),
-                service_account_path
-            )
+                    service_account_path = os.path.join(base_dir, "serviceAccountKey.json")
+                    cred = credentials.Certificate(service_account_path)
 
-        cred = credentials.Certificate(service_account_path)
+                firebase_admin.initialize_app(cred)
 
-    firebase_admin.initialize_app(cred)
-            # Get Firestore client
             FirebaseService._db = firestore.client()
             logger.info("Firebase Admin SDK initialized successfully")
-            
+
         except Exception as e:
             logger.error(f"Failed to initialize Firebase: {str(e)}")
             raise
-    
+
     @property
     def db(self):
         """Get Firestore database instance"""

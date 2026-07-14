@@ -1,7 +1,5 @@
-# Python
 __pycache__/
-*.pyc
-*.pyo
+*.py[cod]
 
 # Virtual environments
 venv/
