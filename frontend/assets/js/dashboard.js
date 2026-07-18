@@ -132,7 +132,7 @@ function switchModule(moduleName) {
 // MINI CHARTS
 // ============================================
 function initMiniCharts() {
-    const chartIds = ['teacherMiniChart', 'subjectMiniChart', 'classMiniChart', 'timetableMiniChart'];
+    const chartIds = ['teacherMiniChart', 'subjectMiniChart', 'classMiniChart'];
     chartIds.forEach(id => {
         const container = document.getElementById(id);
         if (!container) return;
@@ -264,12 +264,10 @@ async function loadDashboard() {
         const teachers = await APIClient.getTeachers();
         const subjects = await APIClient.getSubjects();
         const classes = await APIClient.getClasses();
-        const timetable = await APIClient.getTimetable();
 
         document.getElementById('totalTeachers').textContent = teachers.length;
         document.getElementById('totalSubjects').textContent = subjects.length;
         document.getElementById('totalClasses').textContent = classes.length;
-        document.getElementById('totalTimetables').textContent = timetable.length;
 
         // Load workload
         const workloadContainer = document.getElementById('workloadContainer');
@@ -317,14 +315,12 @@ async function loadTeachers() {
             <tr>
                 <td><div class="skeleton-text" style="width: 60%;"></div></td>
                 <td><div class="skeleton-text" style="width: 70%;"></div></td>
-                <td><div class="skeleton-text" style="width: 40%;"></div></td>
                 <td><div class="skeleton-text" style="width: 50%;"></div></td>
                 <td><div class="skeleton-text" style="width: 80%;"></div></td>
             </tr>
             <tr>
                 <td><div class="skeleton-text" style="width: 60%;"></div></td>
                 <td><div class="skeleton-text" style="width: 70%;"></div></td>
-                <td><div class="skeleton-text" style="width: 40%;"></div></td>
                 <td><div class="skeleton-text" style="width: 50%;"></div></td>
                 <td><div class="skeleton-text" style="width: 80%;"></div></td>
             </tr>
@@ -335,7 +331,7 @@ async function loadTeachers() {
         tbody.innerHTML = '';
 
         if (teachers.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="5" class="text-center text-muted" style="padding: 2rem; color: var(--text-tertiary);">No teachers found. <a href="#" onclick="openAddTeacherModal(); return false;" style="color: var(--primary-light);">Add one now</a></td></tr>';
+            tbody.innerHTML = '<tr><td colspan="4" class="text-center text-muted" style="padding: 2rem; color: var(--text-tertiary);">No teachers found. <a href="#" onclick="openAddTeacherModal(); return false;" style="color: var(--primary-light);">Add one now</a></td></tr>';
             return;
         }
 
@@ -347,7 +343,6 @@ async function loadTeachers() {
             tr.innerHTML = `
                 <td>${teacher.name || 'N/A'}</td>
                 <td>${teacher.department || 'N/A'}</td>
-                <td>${teacher.email ? teacher.email.split('@')[0] : 'No email'}</td>
                 <td><span class="badge" style="background: ${statusBg}; color: ${statusColor}; padding: 0.25rem 0.75rem; border-radius: 0.25rem; font-size: 0.75rem;">${teacher.status || 'inactive'}</span></td>
                 <td>
                     <div class="table-actions" style="display: flex; gap: 0.5rem;">
@@ -370,7 +365,7 @@ async function loadTeachers() {
     } catch (error) {
         console.error('Error loading teachers:', error);
         const tbody = document.getElementById('teachersTableBody');
-        tbody.innerHTML = `<tr><td colspan="5" class="text-center text-danger" style="padding: 2rem; color: var(--danger);">Failed to load teachers: ${error.message}</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="4" class="text-center text-danger" style="padding: 2rem; color: var(--danger);">Failed to load teachers: ${error.message}</td></tr>`;
         window.Toast.error('Failed to load teachers: ' + error.message);
     }
 }
@@ -938,7 +933,12 @@ async function clearTimetableSlot() {
 
 async function loadReportData() {
     try {
-        const classes = await DemoAPI.getClasses();
+        let classes;
+        try {
+            classes = await APIClient.getClasses();
+        } catch (e) {
+            classes = await DemoAPI.getClasses();
+        }
         
         document.getElementById('pdfClassSelect').innerHTML = '<option value="">Select Class...</option>';
         document.getElementById('excelClassSelect').innerHTML = '<option value="">Select Class...</option>';
@@ -960,10 +960,27 @@ async function exportPDF() {
     }
 
     try {
-        const classes = await DemoAPI.getClasses();
-        const timetable = await DemoAPI.getTimetable(classId);
-        const teachers = await DemoAPI.getTeachers();
-        const subjects = await DemoAPI.getSubjects();
+        let classes, timetable, teachers, subjects;
+        try {
+            classes = await APIClient.getClasses();
+            timetable = await APIClient.getTimetable({ class_id: classId });
+            // Normalize timetable data from API
+            timetable = timetable.map(t => ({
+                ...t,
+                teacher: t.teacher || t.teacher_id,
+                subject: t.subject || t.subject_id,
+                period: t.period.toString()
+            }));
+            teachers = await APIClient.getTeachers();
+            subjects = await APIClient.getSubjects();
+            // Normalize subjects teacher field
+            subjects = subjects.map(s => ({ ...s, teacher: s.teacher || s.teacher_id }));
+        } catch (e) {
+            classes = await DemoAPI.getClasses();
+            timetable = await DemoAPI.getTimetable(classId);
+            teachers = await DemoAPI.getTeachers();
+            subjects = await DemoAPI.getSubjects();
+        }
         const cls = classes.find(c => c.id === classId);
 
         // Create a simple HTML representation and print
@@ -983,22 +1000,35 @@ async function exportPDF() {
                 </tr>
         `;
 
-        for (let i = 1; i <= 7; i++) {
+        const periodTimes = [
+            { period: '1', label: '8:30 - 9:30' },
+            { period: '2', label: '9:30 - 10:30' },
+            { period: '3', label: '10:30 - 11:25' },
+            { period: 'INTERVAL', label: '11:25 - 11:40' },
+            { period: '4', label: '11:40 - 12:30' },
+            { period: '5', label: '12:30 - 1:30' }
+        ];
+
+        periodTimes.forEach(pt => {
+            if (pt.period === 'INTERVAL') {
+                html += `<tr><td colspan="7" style="text-align: center; background: #f0f0f0; font-weight: bold;">INTERVAL (${pt.label})</td></tr>`;
+                return;
+            }
             html += '<tr>';
-            html += `<td>Period ${i}</td>`;
+            html += `<td>Period ${pt.period}<br/><small>${pt.label}</small></td>`;
             
             ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'].forEach(day => {
-                const slot = timetable.find(t => t.day === day && t.period === i.toString());
+                const slot = timetable.find(t => t.day === day && t.period === pt.period);
                 if (slot) {
-                    const teacher = teachers.find(t => t.id === slot.teacher);
-                    const subject = subjects.find(s => s.id === slot.subject);
-                    html += `<td>${subject?.code || ''}<br/>${teacher?.name || ''}</td>`;
+                    const teacher = teachers.find(t => t.id === (slot.teacher || slot.teacher_id));
+                    const subject = subjects.find(s => s.id === (slot.subject || slot.subject_id));
+                    html += `<td>${subject?.name || subject?.code || ''}<br/>${teacher?.name || ''}</td>`;
                 } else {
                     html += '<td>-</td>';
                 }
             });
             html += '</tr>';
-        }
+        });
 
         html += '</table>';
 
@@ -1021,10 +1051,25 @@ async function exportExcel() {
     }
 
     try {
-        const classes = await DemoAPI.getClasses();
-        const timetable = await DemoAPI.getTimetable(classId);
-        const teachers = await DemoAPI.getTeachers();
-        const subjects = await DemoAPI.getSubjects();
+        let classes, timetable, teachers, subjects;
+        try {
+            classes = await APIClient.getClasses();
+            timetable = await APIClient.getTimetable({ class_id: classId });
+            timetable = timetable.map(t => ({
+                ...t,
+                teacher: t.teacher || t.teacher_id,
+                subject: t.subject || t.subject_id,
+                period: t.period.toString()
+            }));
+            teachers = await APIClient.getTeachers();
+            subjects = await APIClient.getSubjects();
+            subjects = subjects.map(s => ({ ...s, teacher: s.teacher || s.teacher_id }));
+        } catch (e) {
+            classes = await DemoAPI.getClasses();
+            timetable = await DemoAPI.getTimetable(classId);
+            teachers = await DemoAPI.getTeachers();
+            subjects = await DemoAPI.getSubjects();
+        }
         const cls = classes.find(c => c.id === classId);
 
         let csv = 'Timetable Export\n';
@@ -1033,23 +1078,31 @@ async function exportExcel() {
         csv += `Semester: ${cls.semester}\n`;
         csv += `Date Generated: ${new Date().toLocaleDateString()}\n\n`;
         
-        csv += 'Period,Monday,Tuesday,Wednesday,Thursday,Friday,Saturday\n';
+        csv += 'Period,Time,Monday,Tuesday,Wednesday,Thursday,Friday,Saturday\n';
 
-        for (let i = 1; i <= 7; i++) {
-            let row = `Period ${i}`;
+        const periodTimes = [
+            { period: '1', label: '8:30-9:30' },
+            { period: '2', label: '9:30-10:30' },
+            { period: '3', label: '10:30-11:25' },
+            { period: '4', label: '11:40-12:30' },
+            { period: '5', label: '12:30-1:30' }
+        ];
+
+        periodTimes.forEach(pt => {
+            let row = `Period ${pt.period},${pt.label}`;
             
             ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'].forEach(day => {
-                const slot = timetable.find(t => t.day === day && t.period === i.toString());
+                const slot = timetable.find(t => t.day === day && t.period === pt.period);
                 if (slot) {
-                    const teacher = teachers.find(t => t.id === slot.teacher);
-                    const subject = subjects.find(s => s.id === slot.subject);
-                    row += `,"${subject?.code} (${teacher?.name})"`;
+                    const teacher = teachers.find(t => t.id === (slot.teacher || slot.teacher_id));
+                    const subject = subjects.find(s => s.id === (slot.subject || slot.subject_id));
+                    row += `,"${subject?.name || subject?.code || ''} (${teacher?.name || ''})"`;
                 } else {
                     row += ',-';
                 }
             });
             csv += row + '\n';
-        }
+        });
 
         // Download as CSV
         const blob = new Blob([csv], { type: 'text/csv' });
@@ -1069,15 +1122,29 @@ async function exportExcel() {
 
 async function generateWorkloadReport() {
     try {
-        const workload = await DemoAPI.getTeacherWorkload();
-        const teachers = await DemoAPI.getTeachers();
+        let teachers, timetable;
+        try {
+            teachers = await APIClient.getTeachers();
+            timetable = await APIClient.getTimetable();
+            timetable = timetable.map(t => ({
+                ...t,
+                teacher: t.teacher || t.teacher_id,
+                subject: t.subject || t.subject_id
+            }));
+        } catch (e) {
+            teachers = await DemoAPI.getTeachers();
+            timetable = await DemoAPI.getTimetable();
+        }
 
         let csv = 'Teacher Workload Report\n';
         csv += `Date Generated: ${new Date().toLocaleDateString()}\n\n`;
-        csv += 'Teacher Name,Subjects Taught,Classes Assigned,Total Hours Per Week\n';
+        csv += 'Teacher Name,Department,Subjects Taught,Classes Assigned,Total Hours Per Week\n';
 
-        Object.values(workload).forEach(item => {
-            csv += `"${item.teacher}",${item.subjects},${item.classes},${item.totalHours}\n`;
+        teachers.forEach(teacher => {
+            const teacherSlots = timetable.filter(t => (t.teacher === teacher.id || t.teacher_id === teacher.id));
+            const uniqueSubjects = [...new Set(teacherSlots.map(t => t.subject || t.subject_id))];
+            const uniqueClasses = [...new Set(teacherSlots.map(t => t.class_id))];
+            csv += `"${teacher.name}","${teacher.department || 'N/A'}",${uniqueSubjects.length},${uniqueClasses.length},${teacherSlots.length}\n`;
         });
 
         const blob = new Blob([csv], { type: 'text/csv' });
@@ -1099,14 +1166,26 @@ async function generateWorkloadReport() {
 
 async function generateConflictReport() {
     try {
-        const timetable = await DemoAPI.getTimetable();
-        const teachers = await DemoAPI.getTeachers();
+        let timetable, teachers;
+        try {
+            timetable = await APIClient.getTimetable();
+            timetable = timetable.map(t => ({
+                ...t,
+                teacher: t.teacher || t.teacher_id,
+                subject: t.subject || t.subject_id,
+                period: t.period.toString()
+            }));
+            teachers = await APIClient.getTeachers();
+        } catch (e) {
+            timetable = await DemoAPI.getTimetable();
+            teachers = await DemoAPI.getTeachers();
+        }
         const conflicts = [];
 
         // Check for conflicts
         timetable.forEach(slot => {
             const conflicting = timetable.filter(t => 
-                t.teacher === slot.teacher && 
+                (t.teacher === slot.teacher || t.teacher_id === slot.teacher_id) && 
                 t.day === slot.day && 
                 t.period === slot.period && 
                 t.id !== slot.id
@@ -1124,11 +1203,11 @@ async function generateConflictReport() {
 
         let csv = 'Scheduling Conflict Report\n';
         csv += `Date Generated: ${new Date().toLocaleDateString()}\n\n`;
-        csv += 'Conflicts Found,Teacher,Day,Period\n';
+        csv += 'Teacher,Day,Period\n';
 
         conflicts.forEach(conflict => {
-            const teacher = teachers.find(t => t.id === conflict.teacher);
-            csv += `"${teacher?.name}","${teacher?.name}","${conflict.day}","${conflict.period}"\n`;
+            const teacher = teachers.find(t => t.id === (conflict.teacher || conflict.teacher_id));
+            csv += `"${teacher?.name || 'Unknown'}","${conflict.day}","${conflict.period}"\n`;
         });
 
         const blob = new Blob([csv], { type: 'text/csv' });

@@ -325,8 +325,7 @@ async function loadStudentTimetable() {
         subject_code: subject?.code || '',
         subject_name: subject?.name || '',
         teacher_name: teacher ? teacher.name : (slot.teacher || 'Unassigned'),
-        teacher_id: slot.teacher,
-        room: slot.room || ('Room ' + (200 + parseInt(slot.period)))
+        teacher_id: slot.teacher
       });
     });
 
@@ -347,12 +346,12 @@ async function loadStudentTimetable() {
 function renderClassTimetableTable(container, timetableData) {
   const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
   const timeSlots = [
-    { period: '1', time: '9:00 AM', end: '10:00 AM' },
-    { period: '2', time: '10:00 AM', end: '11:00 AM' },
-    { period: '3', time: '11:15 AM', end: '12:15 PM' },
-    { period: 'LUNCH', time: '12:15 PM', end: '1:15 PM' },
-    { period: '4', time: '2:00 PM', end: '3:00 PM' },
-    { period: '5', time: '3:00 PM', end: '4:00 PM' }
+    { period: '1', time: '8:30 AM', end: '9:30 AM' },
+    { period: '2', time: '9:30 AM', end: '10:30 AM' },
+    { period: '3', time: '10:30 AM', end: '11:25 AM' },
+    { period: 'INTERVAL', time: '11:25 AM', end: '11:40 AM' },
+    { period: '4', time: '11:40 AM', end: '12:30 PM' },
+    { period: '5', time: '12:30 PM', end: '1:30 PM' }
   ];
 
   const colorCycle = ['sv-cell-blue', 'sv-cell-purple', 'sv-cell-green', 'sv-cell-amber', 'sv-cell-rose', 'sv-cell-teal'];
@@ -373,18 +372,14 @@ function renderClassTimetableTable(container, timetableData) {
   html += '</tr></thead><tbody>';
 
   timeSlots.forEach(slot => {
-    if (slot.period === 'LUNCH') {
+    if (slot.period === 'INTERVAL') {
       html += `<tr class="sv-lunch-row">
         <td class="sv-time-cell">${slot.time}<span class="sv-time-range">${slot.end}</span></td>
         <td colspan="${days.length}"><div class="sv-lunch-cell">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M18 8h1a4 4 0 0 1 0 8h-1"/>
-            <path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/>
-            <line x1="6" y1="1" x2="6" y2="4"/>
-            <line x1="10" y1="1" x2="10" y2="4"/>
-            <line x1="14" y1="1" x2="14" y2="4"/>
+            <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
           </svg>
-          LUNCH BREAK
+          INTERVAL
         </div></td>
       </tr>`;
     } else {
@@ -399,7 +394,6 @@ function renderClassTimetableTable(container, timetableData) {
             <div class="sv-cell ${colorClass}" data-teacher-id="${cellData.teacher_id}">
               <div class="sv-cell-subject">${cellData.subject_name}</div>
               <div class="sv-cell-class">${cellData.teacher_name}</div>
-              <div class="sv-cell-room">${cellData.room}</div>
             </div>
           </td>`;
         } else {
@@ -444,8 +438,7 @@ async function loadTeacherTimetable(teacherId, teacherName) {
         period: slot.period,
         class_name: cls?.name || 'Unknown',
         subject_name: subject?.name || '',
-        subject_code: subject?.code || '',
-        room: slot.room || ('Room ' + (200 + parseInt(slot.period)))
+        subject_code: subject?.code || ''
       });
     });
 
@@ -460,12 +453,12 @@ async function loadTeacherTimetable(teacherId, teacherName) {
 function renderTeacherTimetableTable(container, timetableData) {
   const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
   const timeSlots = [
-    { period: '1', time: '9:00 AM', end: '10:00 AM' },
-    { period: '2', time: '10:00 AM', end: '11:00 AM' },
-    { period: '3', time: '11:15 AM', end: '12:15 PM' },
-    { period: 'LUNCH', time: '12:15 PM', end: '1:15 PM' },
-    { period: '4', time: '2:00 PM', end: '3:00 PM' },
-    { period: '5', time: '3:00 PM', end: '4:00 PM' }
+    { period: '1', time: '8:30 AM', end: '9:30 AM' },
+    { period: '2', time: '9:30 AM', end: '10:30 AM' },
+    { period: '3', time: '10:30 AM', end: '11:25 AM' },
+    { period: 'INTERVAL', time: '11:25 AM', end: '11:40 AM' },
+    { period: '4', time: '11:40 AM', end: '12:30 PM' },
+    { period: '5', time: '12:30 PM', end: '1:30 PM' }
   ];
 
   const colorCycle = ['sv-cell-purple', 'sv-cell-blue', 'sv-cell-teal', 'sv-cell-amber', 'sv-cell-green', 'sv-cell-rose'];
@@ -486,18 +479,14 @@ function renderTeacherTimetableTable(container, timetableData) {
   html += '</tr></thead><tbody>';
 
   timeSlots.forEach(slot => {
-    if (slot.period === 'LUNCH') {
+    if (slot.period === 'INTERVAL') {
       html += `<tr class="sv-lunch-row">
         <td class="sv-time-cell">${slot.time}<span class="sv-time-range">${slot.end}</span></td>
         <td colspan="${days.length}"><div class="sv-lunch-cell">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M18 8h1a4 4 0 0 1 0 8h-1"/>
-            <path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/>
-            <line x1="6" y1="1" x2="6" y2="4"/>
-            <line x1="10" y1="1" x2="10" y2="4"/>
-            <line x1="14" y1="1" x2="14" y2="4"/>
+            <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
           </svg>
-          LUNCH BREAK
+          INTERVAL
         </div></td>
       </tr>`;
     } else {
@@ -512,7 +501,6 @@ function renderTeacherTimetableTable(container, timetableData) {
             <div class="sv-cell ${colorClass}">
               <div class="sv-cell-subject">${cellData.subject_name}</div>
               <div class="sv-cell-class">${cellData.class_name}</div>
-              <div class="sv-cell-room">${cellData.room}</div>
             </div>
           </td>`;
         } else {
@@ -612,8 +600,7 @@ async function downloadClassPDF() {
       day: s.day,
       period: s.period,
       subject_name: subObj?.name || '',
-      teacher_name: teachObj?.name || '',
-      room: s.room || ('Room ' + (200 + parseInt(s.period)))
+      teacher_name: teachObj?.name || ''
     });
   });
 
@@ -638,8 +625,7 @@ async function downloadTeacherPDF() {
       day: slot.day,
       period: slot.period,
       subject_name: subject?.name || '',
-      class_name: cls?.name || '',
-      room: slot.room || ('Room ' + (200 + parseInt(slot.period)))
+      class_name: cls?.name || ''
     });
   });
 
@@ -659,7 +645,7 @@ function buildPDFHtml(title, timetable, mode) {
       const slot = timetable.find(t => t.day === day && t.period === p);
       if (slot) {
         const secondary = mode === 'teacher' ? slot.class_name : slot.teacher_name;
-        tableRows += `<td>${slot.subject_name}<br/><small>${secondary}</small><br/><small style="color:#888;">${slot.room}</small></td>`;
+        tableRows += `<td>${slot.subject_name}<br/><small>${secondary}</small></td>`;
       } else {
         tableRows += '<td style="color:#ccc;">—</td>';
       }

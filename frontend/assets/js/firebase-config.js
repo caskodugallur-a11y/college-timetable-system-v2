@@ -399,13 +399,13 @@ const DemoAPI = {
                 const periodInt = parseInt(slot.period);
                 const get_time_for_period = (p) => {
                     const times = {
-                        1: ['09:00', '10:00'],
-                        2: ['10:00', '11:00'],
-                        3: ['11:15', '12:15'],
-                        4: ['14:00', '15:00'],
-                        5: ['15:00', '16:00']
+                        1: ['08:30', '09:30'],
+                        2: ['09:30', '10:30'],
+                        3: ['10:30', '11:25'],
+                        4: ['11:40', '12:30'],
+                        5: ['12:30', '13:30']
                     };
-                    return times[p] || ['09:00', '10:00'];
+                    return times[p] || ['08:30', '09:30'];
                 };
                 const timeRange = get_time_for_period(periodInt);
                 const data = {
@@ -418,7 +418,6 @@ const DemoAPI = {
                     subject_id: slot.subject,
                     start_time: timeRange[0],
                     end_time: timeRange[1],
-                    room: slot.room || `Room ${200 + periodInt}`,
                     type: 'Lecture'
                 };
                 if (slot.id && !slot.id.startsWith('temp_') && isNaN(slot.id)) {
