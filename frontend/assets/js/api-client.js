@@ -4,13 +4,12 @@
 // ============================================
 
 const API_CONFIG = {
-    BASE_URL: window.location.origin + '/api',
+    BASE_URL: (window.location.origin.startsWith('file') ? 'http://localhost:5000' : window.location.origin) + '/api',
     TIMEOUT: 8000,
     DEFAULT_HEADERS: {
         'Content-Type': 'application/json',
         'Accept': 'application/json'
     }
-
 };
 
 /**

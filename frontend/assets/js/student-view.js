@@ -20,8 +20,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
 async function initializeStudentView() {
   try {
-    // Load departments into dropdown (preserved logic)
-    const departments = ['BCA', 'BCom'];
+    const classes = await DemoAPI.getClasses();
+    const departments = [...new Set(classes.map(c => c.department))].filter(Boolean);
     const deptSelect = document.getElementById('studentDept');
 
     deptSelect.innerHTML = '<option value="">Select Department</option>';
